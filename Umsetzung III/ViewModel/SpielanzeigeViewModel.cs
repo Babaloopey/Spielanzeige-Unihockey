@@ -153,6 +153,7 @@ namespace Umsetzung_III
             OnPropertyChanged("GastTeamScore");
             OnPropertyChanged("HeimTeamName");
             OnPropertyChanged("GastTeamName");
+            OnPropertyChanged("Halbzeit");
         }
 
         public SpielanzeigeViewModel()
