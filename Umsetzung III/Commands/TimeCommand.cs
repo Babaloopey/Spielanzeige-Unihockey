@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Umsetzung_III.Stores;
 using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
@@ -11,11 +12,13 @@ namespace Umsetzung_III
     internal class TimeCommand : CommandBase
     {
         private readonly TimerStore _timerStore;
+        private readonly SpielzeitStore _spielzeitStore;
         private readonly ZeitAktion _zeitAktion;
 
-        public TimeCommand(TimerStore timerStore,ZeitAktion zeitAktion)
+        public TimeCommand(TimerStore timerStore, SpielzeitStore spielzeitStore ,ZeitAktion zeitAktion)
         {
             this._timerStore = timerStore;
+            this._spielzeitStore = spielzeitStore;
             this._zeitAktion = zeitAktion;
         }
 
@@ -31,12 +34,13 @@ namespace Umsetzung_III
                     break;
                 case ZeitAktion.Reset:
                     _timerStore.Reset();
+                    _spielzeitStore.Reset();
                     break;
                 case ZeitAktion.PlusOne:
-                    _timerStore.MinutePlusOne();
+                    _spielzeitStore.MinutePlusOne();
                     break;
                 case ZeitAktion.MinusOne:
-                    _timerStore.MinuteMinusOne();
+                    _spielzeitStore.MinuteMinusOne();
                     break;
                 case ZeitAktion.Space:
                     if (_timerStore.ButtonVisibilityStart == true)
