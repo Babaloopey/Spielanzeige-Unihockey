@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Umsetzung_III.Model;
 using Umsetzung_III.Stores;
 using static Umsetzung_III.Actions;
 
@@ -27,28 +29,31 @@ namespace Umsetzung_III
         public bool ButtonVisibilityStart => _timerStore.ButtonVisibilityStart;
         public bool ButtonVisibilityStop => !_timerStore.ButtonVisibilityStart;
         public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
-
-        public bool ButtonVisibilityHeimStrafe => _strafenHeim.ButtonVisibilityStrafe;
-        public bool ButtonVisibilityHeimReset => !_strafenHeim.ButtonVisibilityStrafe;
-        public bool ButtonVisibilityGastStrafe => _strafenGast.ButtonVisibilityStrafe;
-        public bool ButtonVisibilityGastReset => !_strafenGast.ButtonVisibilityStrafe;
         public bool LogoVisibility => _logoStore.LogoVisibility;
 
         // Properties, die von der View abgefragt werden, um Informationen darzustellen
         public string Spielzeit
-            { get { return _spielzeitStore.Spielzeit; }
+        {
+            get { return _spielzeitStore.Spielzeit; }
         }
         public int SpielMinute
         { get { return _spielzeitStore.SpielMinute; } }
         public int SpielSekunde
         { get { return _spielzeitStore.SpielSekunde; } }
-        public string HeimTeamStrafe
+        public ObservableCollection<AngezeigteStrafe> HeimTeamStrafe
         {
-            get { return _strafenHeim.Strafzeit; }
+            get
+            {
+                return _strafenHeim.Strafen;
+            }
         }
-        public string GastTeamStrafe
+        public ObservableCollection<AngezeigteStrafe> GastTeamStrafe
         {
-            get { return _strafenGast.Strafzeit; }
+            get
+            {
+                return _strafenGast.Strafen;
+
+            }
         }
         public bool HeimTeamStrafeRunning
         {
@@ -136,12 +141,12 @@ namespace Umsetzung_III
         public ICommand HeimStrafeZwei { get; }
         public ICommand HeimStrafeFuenf { get; }
         public ICommand HeimStrafeZehn { get; }
-        public ICommand HeimStrafeReset { get; }
+        public ICommand HeimStrafeDelete { get; }
 
         public ICommand GastStrafeZwei { get; }
         public ICommand GastStrafeFuenf { get; }
         public ICommand GastStrafeZehn { get; }
-        public ICommand GastStrafeReset { get; }
+        public ICommand GastStrafeDelete { get; }
 
         // Zuruecksetzen des gesamten ViewModels auf den Anfangszustand
         public void ResetViewModel()
@@ -177,20 +182,17 @@ namespace Umsetzung_III
             _spielzeitStore.EffektiveSpielzeitVisibilityChanged += SpielzeitStore_EffektiveSpielzeitVisibilityChanged;
             _spielzeitStore.OnSpielzeitAbgelaufen += SpielzeitStore_SpielzeitAbgelaufen;
 
+            _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged; 
+            _strafenGast.OnStrafenChanged += StrafenGast_StrafenChanged;
 
-            _strafenHeim.OnStrafzeitChanged += StrafenHeim_StrafzeitChanged;
-            _strafenHeim.OnButtonVisibilityChanged += StrafenHeim_ButtonVisibilityChanged;
-
-            _strafenGast.OnStrafzeitChanged += StrafenGast_StrafzeitChanged;
-            _strafenGast.OnButtonVisibilityChanged += StrafenGast_ButtonVisibilityChanged;
 
             _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged; ;
 
             // Zuteilung fuer Buttons
             // Buttons fuer die Kontrolle des Punktestandes
             GastScoreUp = new ScoreCommand(this, Team.Gast, StandVeraenderung.Hoch);
-            GastScoreDown =new ScoreCommand(this, Team.Gast, StandVeraenderung.Runter);
-            HeimScoreUp = new ScoreCommand(this, Team.Heim, StandVeraenderung.Hoch); 
+            GastScoreDown = new ScoreCommand(this, Team.Gast, StandVeraenderung.Runter);
+            HeimScoreUp = new ScoreCommand(this, Team.Heim, StandVeraenderung.Hoch);
             HeimScoreDown = new ScoreCommand(this, Team.Heim, StandVeraenderung.Runter);
 
             // Buttons fuer die Kontrolle der Spielzeit
@@ -204,23 +206,23 @@ namespace Umsetzung_III
 
 
             // Buttons fuer die Kontrolle der Strafen: Gast
-            GastStrafeZwei = new StrafenCommand( _strafenGast, Strafe.Zwei);
-            GastStrafeFuenf = new StrafenCommand( _strafenGast, Strafe.Fuenf);
+            GastStrafeZwei = new StrafenCommand(_strafenGast, Strafe.Zwei);
+            GastStrafeFuenf = new StrafenCommand(_strafenGast, Strafe.Fuenf);
             GastStrafeZehn = new StrafenCommand(_strafenGast, Strafe.Zehn);
-            GastStrafeReset = new StrafenCommand(_strafenGast, Strafe.Reset);
+            GastStrafeDelete = new StrafenCommand(_strafenGast, Strafe.Reset);
 
             // Buttons fuer die Kontrolle der Strafen: Heim
             HeimStrafeZwei = new StrafenCommand(_strafenHeim, Strafe.Zwei);
             HeimStrafeFuenf = new StrafenCommand(_strafenHeim, Strafe.Fuenf);
             HeimStrafeZehn = new StrafenCommand(_strafenHeim, Strafe.Zehn);
-            HeimStrafeReset = new StrafenCommand(_strafenHeim, Strafe.Reset);
+            HeimStrafeDelete = new StrafenCommand(_strafenHeim, Strafe.Reset);
 
             // Button um das ViewModel zurueckzusetzen
             ResetAll = new ResetAllCommand(this);
         }
 
         // Funktionen, die an die Events der Stores gebunden sind: Im Konstruktor verlinkt
-        
+
         private void TimerStore_ButtonVisibilityChanged()
         {
             OnPropertyChanged("ButtonVisibilityStart");
@@ -228,8 +230,8 @@ namespace Umsetzung_III
         }
         private void TimerStore_TimerElapsed()
         {
-            _strafenGast.CheckIfStrafeStillActive();
-            _strafenHeim.CheckIfStrafeStillActive();
+            //_strafenGast.CheckIfStrafeStillActive();
+            //_strafenHeim.CheckIfStrafeStillActive();
             _spielzeitStore.TimerElapsed();
         }
 
@@ -246,28 +248,16 @@ namespace Umsetzung_III
             _timerStore.Stop();
         }
 
-        private void StrafenHeim_StrafzeitChanged()
+        private void StrafenHeim_StrafenChanged()
         {
-            OnPropertyChanged("HeimTeamStrafe");
-        }
-        private void StrafenHeim_ButtonVisibilityChanged()
-        {
-                OnPropertyChanged("ButtonVisibilityHeimStrafe");
-                OnPropertyChanged("ButtonVisibilityHeimReset");
-                _logoStore.CheckIfLogoMustBeVisible();
+            _logoStore.CheckIfLogoMustBeVisible();        
         }
 
-        private void StrafenGast_StrafzeitChanged()
+        private void StrafenGast_StrafenChanged()
         {
-            OnPropertyChanged("GastTeamStrafe");
-        }
-        private void StrafenGast_ButtonVisibilityChanged()
-        {
-            OnPropertyChanged("ButtonVisibilityGastStrafe");
-            OnPropertyChanged("ButtonVisibilityGastReset");
             _logoStore.CheckIfLogoMustBeVisible();
-
         }
+
         private void LogoStore_LogoVisibilityChanged()
         {
             OnPropertyChanged("LogoVisibility");

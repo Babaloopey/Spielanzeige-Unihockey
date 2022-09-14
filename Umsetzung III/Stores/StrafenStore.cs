@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+using System.Collections.ObjectModel;
+using Umsetzung_III.Model;
 using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
@@ -12,25 +10,22 @@ namespace Umsetzung_III
     {
         private readonly SpielanzeigeViewModel _spielanzeigeViewModel;
 
-        private int _strafMinute;
-        private int _strafSekunde;
-        public string Strafzeit => _strafMinute.ToString("00") + ":" + _strafSekunde.ToString("00");
-        public bool ButtonVisibilityStrafe;
-        public bool StrafeIsRunning => !ButtonVisibilityStrafe;
+        public ObservableCollection<AngezeigteStrafe> Strafen = new ObservableCollection<AngezeigteStrafe>();
 
-        public event Action OnStrafzeitChanged;
-        public event Action OnButtonVisibilityChanged;
+        public bool StrafeIsRunning => Strafen.Count > 0 ? true : false;
+
+        public event Action OnStrafenChanged;
+
 
         public StrafenStore(SpielanzeigeViewModel spielanzeigeviewModel)
         {
             _spielanzeigeViewModel = spielanzeigeviewModel;
 
-            ButtonVisibilityStrafe = true;
-            ButtonVisibilityChanged();
-
         }
-        public void Start(Strafe strafe)
+        public void CreateStrafe(Strafe strafe)
         {
+            int _strafMinute = 0;
+            int _strafSekunde = 0;
             switch (strafe)
             {
                 case Strafe.Zwei:
@@ -44,52 +39,55 @@ namespace Umsetzung_III
                     break;
             }
 
-            if(_strafMinute < 0)
+            if (_strafMinute < 0)
             {
                 _strafMinute = 20 + _strafMinute;
             }
 
             _strafSekunde = _spielanzeigeViewModel.SpielSekunde;
 
-            StrafzeitChanged();
-
-            ButtonVisibilityStrafe = false;
-            ButtonVisibilityChanged();
+            Strafen.Add(new AngezeigteStrafe(_strafMinute, _strafSekunde));
+            StrafenChanged();
 
         }
 
         public void CheckIfStrafeStillActive()
         {
-            if(_strafMinute == _spielanzeigeViewModel.SpielMinute && _strafSekunde == _spielanzeigeViewModel.SpielSekunde)
-            {
-            Timer wartezeit = new Timer(3000);
-            wartezeit.Start();
-                wartezeit.Elapsed += (sender, args) =>
-                {
+            //    secondCounter++;
+            //    if (secondCounter >= 10)
+            //    {
+            //        for (var i = Strafen.Count - 1; i >= 0; i--)
+            //        {
+            //            if (Strafen[i].minute == _spielanzeigeViewModel.SpielMinute && Strafen[i].second == _spielanzeigeViewModel.SpielSekunde)
+            //            {
+            //                RemoveStrafeByIndex(i);
+            //            }
+            //        }
+            //        secondCounter = 0;
+            //    }
+        }
 
-                    Reset();
-                    wartezeit.Dispose();
-                };
+        public void Delete(object strafe)
+        {
+            if (strafe != null)
+            {
+                if (strafe.GetType() == typeof(AngezeigteStrafe))
+                {
+                    Strafen.Remove((AngezeigteStrafe)strafe);
+                    StrafenChanged();
+                }
             }
         }
+
         public void Reset()
         {
-            _strafMinute = 0;
-            _strafSekunde = 0;
-            StrafzeitChanged();
-
-            ButtonVisibilityStrafe = true;
-            ButtonVisibilityChanged();   
+            Strafen.Clear();
+            StrafenChanged();
         }
 
-        private void StrafzeitChanged()
+        private void StrafenChanged()
         {
-            OnStrafzeitChanged?.Invoke();
-        }
-
-        private void ButtonVisibilityChanged()
-        {
-            OnButtonVisibilityChanged?.Invoke();
+           OnStrafenChanged?.Invoke();
         }
     }
 }

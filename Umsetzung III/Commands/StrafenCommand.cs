@@ -8,7 +8,7 @@ using static Umsetzung_III.Actions;
 namespace Umsetzung_III
 {
     // Command, der je Nach Strafe und Store beim jeweiligen Team eine Strafe beginnt
-    internal class StrafenCommand : CommandBase
+    internal class StrafenCommand: CommandBase
     {
         private readonly Strafe _strafe;
         private readonly StrafenStore _strafenStore;
@@ -24,10 +24,14 @@ namespace Umsetzung_III
             switch (_strafe)
             {
                 case Strafe.Reset:
-                    _strafenStore.Reset();
+                    if(parameter != null)
+                    {
+                        _strafenStore.Delete(parameter);
+                    }
+                   
                     break;
                 default:
-                    _strafenStore.Start(_strafe);
+                    _strafenStore.CreateStrafe(_strafe);
                     break;
             }
         }

@@ -211,43 +211,41 @@
                         </Grid.RowDefinitions>
 
                         <Button x:Name="GastUp"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Margin="20,50,10,5"
-                            Content="+ (Ctrl+P)"
-                            Foreground="#2D2D2D"
-                            FontSize="30"
-                            Focusable="False"
-                            Command="{Binding GastScoreUp}"/>
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="20,50,10,5"
+                                Content="+ (Ctrl+P)"
+                                Foreground="#2D2D2D"
+                                FontSize="30"
+                                Focusable="False"
+                                Command="{Binding GastScoreUp}" />
 
                         <Button x:Name="GastDown"
-                            Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="20,5,10,50"
-                            Content="- (Ctrl+O)"
-                            Foreground="#2D2D2D"
-                            FontSize="30"
-                            Focusable="False"
-                            Command="{Binding GastScoreDown}"/>
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="20,5,10,50"
+                                Content="- (Ctrl+O)"
+                                Foreground="#2D2D2D"
+                                FontSize="30"
+                                Focusable="False"
+                                Command="{Binding GastScoreDown}" />
 
                         <TextBlock Grid.Column="0"
-                           FontSize="100"
-                           VerticalAlignment="Center"                   
-                           Foreground="#2D2D2D"
-                           Margin="20"
-                           HorizontalAlignment="Right"
-                           Text="{Binding GastTeamScore}"/>
+                                   FontSize="100"
+                                   VerticalAlignment="Center"
+                                   Foreground="#2D2D2D"
+                                   Margin="20"
+                                   HorizontalAlignment="Right"
+                                   Text="{Binding GastTeamScore}" />
 
                         <TextBlock Grid.Column="0"
-                           Grid.Row="1" 
-                           FontSize="50"
-                           VerticalAlignment="Center"                   
-                           Foreground="#2D2D2D"
-                           Margin="20"
-                           HorizontalAlignment="Right">Gast</TextBlock>
-
+                                   Grid.Row="1"
+                                   FontSize="50"
+                                   VerticalAlignment="Center"
+                                   Foreground="#2D2D2D"
+                                   Margin="20"
+                                   HorizontalAlignment="Right">Gast</TextBlock>
                     </Grid>
-
                 </Grid>
 
                 <Grid Grid.Row="2">
@@ -270,7 +268,6 @@
                         <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
 
-
                     <Button x:Name="ZweiMinHeim"
                             Grid.Row="0"
                             Grid.Column="1"
@@ -279,7 +276,6 @@
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityHeimStrafe, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding HeimStrafeZwei}"/>
                     <Button x:Name="FünfMinHeim"
                             Grid.Row="0"
@@ -289,29 +285,27 @@
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityHeimStrafe, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding HeimStrafeFuenf}"/>
                     <Button x:Name="ZehnMinHeim"
-                            Grid.Row="0"
-                            Grid.Column="3"
+                            Grid.Row="1"
+                            Grid.Column="1"
                             Margin="5,5"
                             Content="10''"
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityHeimStrafe, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding HeimStrafeZehn}"/>
                     <Button x:Name="AbbruchHeim"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Grid.ColumnSpan="3"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Grid.ColumnSpan="1"
                             Margin="5,5"
-                            Content="Abbruch"
+                            Content="X"
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityHeimReset, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Command="{Binding HeimStrafeReset}"/>
+                            Command="{Binding HeimStrafeDelete}"
+                            CommandParameter="{Binding ElementName=HeimStrafenList, Path=SelectedItem}" />
 
                     <Button x:Name="AlleZurücksetzen"
                             Grid.Row="0"
@@ -348,67 +342,74 @@
                             Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding TimePlusOne}" />
 
-                    <TextBlock  
-                       Grid.Row="1"
-                       Grid.Column="2"
-                       Grid.ColumnSpan="2"
-                       FontSize="50"
-                       VerticalAlignment="Center"                   
-                       Foreground="#2D2D2D"
-                       HorizontalAlignment="Center"
-                       Text="{Binding HeimTeamStrafe}"/>
+                    <ListBox 
+                        x:Name="HeimStrafenList"
+                        Grid.Row="0"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2"
+                             Grid.RowSpan="2"
+                             FontSize="40"
+                             Margin="0,-20,0,0"
+                             VerticalAlignment="Center"
+                             Foreground="#2D2D2D"
+                             HorizontalAlignment="Center"
+                             ItemsSource="{Binding HeimTeamStrafe}" 
+                             DisplayMemberPath="displayStrafe"
+                             />
 
-                    <TextBlock 
-                       Grid.Column="8"
-                       Grid.Row="1" 
-                       Grid.ColumnSpan="2"
-                       FontSize="50"
-                       VerticalAlignment="Center"                   
-                       Foreground="#2D2D2D"
-                       HorizontalAlignment="Center"
-                       Text="{Binding GastTeamStrafe}"/>
+                    <ListBox x:Name="GastStrafenList"
+                             Grid.Column="7"
+                             Grid.Row="0"
+                             Grid.ColumnSpan="2"
+                             Grid.RowSpan="2"
+                             Margin="0,-20,0,0"
+                             FontSize="40"
+                             VerticalAlignment="Center"
+                             Foreground="#2D2D2D"
+                             HorizontalAlignment="Center"
+                             ItemsSource="{Binding GastTeamStrafe}"
+                             DisplayMemberPath="displayStrafe" />
+
+
 
                     <Button x:Name="ZweiMinGast"
                             Grid.Row="0"
-                            Grid.Column="8"
+                            Grid.Column="9"
                             Margin="5,5"
                             Content="2''"
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityGastStrafe, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding GastStrafeZwei}"/>
                     <Button x:Name="FünfMinGast"
                             Grid.Row="0"
-                            Grid.Column="9"
+                            Grid.Column="10"
                             Margin="5,5"
                             Content="5''"
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityGastStrafe, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding GastStrafeFuenf}"/>
                     <Button x:Name="ZehnMinGast"
-                            Grid.Row="0"
-                            Grid.Column="10"
+                            Grid.Row="1"
+                            Grid.Column="9"
                             Margin="5,5"
                             Content="10''"
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityGastStrafe, Converter={StaticResource BooleanToVisibilityConverter}}"
                             Command="{Binding GastStrafeZehn}"/>
-                    <Button x:Name="AbbruchGast"
-                            Grid.Row="0"
-                            Grid.Column="8"
-                            Grid.ColumnSpan="3"
+
+                    <Button 
+                            Grid.Row="1"
+                            Grid.Column="10"
                             Margin="5,5"
-                            Content="Abbruch"
                             Foreground="#2D2D2D"
                             FontSize="50"
                             Focusable="False"
-                            Visibility="{Binding Path=ButtonVisibilityGastReset, Converter={StaticResource BooleanToVisibilityConverter}}"
-                            Command="{Binding GastStrafeReset}"/>
+                            Content="X"
+                            Command="{Binding GastStrafeDelete}"
+                            CommandParameter="{Binding ElementName=GastStrafenList, Path=SelectedItem}" />
 
                 </Grid>
             </Grid>
