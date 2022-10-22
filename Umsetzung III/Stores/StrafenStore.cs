@@ -13,9 +13,14 @@ namespace Umsetzung_III
         public ObservableCollection<AngezeigteStrafe> Strafen = new ObservableCollection<AngezeigteStrafe>();
 
         public bool StrafeIsRunning => Strafen.Count > 0 ? true : false;
+        public int StrafenAnzeigeGroesse = 0;
 
         public event Action OnStrafenChanged;
+        public event Action OnStrafenAnzeigeGroesseChanged;
 
+        private int grosseSchrift = 100;
+        private int mittlereSchrift = 70;
+        private int kleineSchrift = 55;
 
         public StrafenStore(SpielanzeigeViewModel spielanzeigeviewModel)
         {
@@ -24,31 +29,36 @@ namespace Umsetzung_III
         }
         public void CreateStrafe(Strafe strafe)
         {
-            int _strafMinute = 0;
-            int _strafSekunde = 0;
+            int _strafSekunde = _spielanzeigeViewModel.SpielSekunde;
+
             switch (strafe)
             {
                 case Strafe.Zwei:
-                    _strafMinute = _spielanzeigeViewModel.SpielMinute - 2;
+                    Strafen.Add(new AngezeigteStrafe(calculateStrafminute(2), _strafSekunde));
                     break;
-                case Strafe.Fuenf:
-                    _strafMinute = _spielanzeigeViewModel.SpielMinute - 5;
+                case Strafe.Vier:
+                    Strafen.Add(new AngezeigteStrafe(calculateStrafminute(2), _strafSekunde));
+                    Strafen.Add(new AngezeigteStrafe(calculateStrafminute(4), _strafSekunde));
                     break;
                 case Strafe.Zehn:
-                    _strafMinute = _spielanzeigeViewModel.SpielMinute - 10;
+                    Strafen.Add(new AngezeigteStrafe(calculateStrafminute(10), _strafSekunde));
                     break;
             }
 
-            if (_strafMinute < 0)
-            {
-                _strafMinute = 20 + _strafMinute;
-            }
-
-            _strafSekunde = _spielanzeigeViewModel.SpielSekunde;
-
-            Strafen.Add(new AngezeigteStrafe(_strafMinute, _strafSekunde));
             StrafenChanged();
 
+        }
+
+        private int calculateStrafminute(int strafzeit)
+        {
+            int strafMinute = _spielanzeigeViewModel.SpielMinute - strafzeit;
+
+            if (strafMinute < 0)
+            {
+                strafMinute = 20 + strafMinute;
+            }
+
+            return strafMinute;
         }
 
         public void CheckIfStrafeStillActive()
@@ -65,6 +75,22 @@ namespace Umsetzung_III
             //        }
             //        secondCounter = 0;
             //    }
+        }
+
+        public void AdjustStrafenAnzeigeGroesse()
+        {
+            if(Strafen.Count == 1)
+            {
+                StrafenAnzeigeGroesse = grosseSchrift;
+            }
+            else if(Strafen.Count == 2)
+            {
+                StrafenAnzeigeGroesse = mittlereSchrift;
+            }
+            else
+            {
+                StrafenAnzeigeGroesse = kleineSchrift;
+            }
         }
 
         public void Delete(object strafe)
@@ -87,7 +113,14 @@ namespace Umsetzung_III
 
         private void StrafenChanged()
         {
+            AdjustStrafenAnzeigeGroesse();
+            StrafenAnzeigeGroesseChanged();
            OnStrafenChanged?.Invoke();
+        }
+
+        private void StrafenAnzeigeGroesseChanged()
+        {
+            OnStrafenAnzeigeGroesseChanged?.Invoke();
         }
     }
 }

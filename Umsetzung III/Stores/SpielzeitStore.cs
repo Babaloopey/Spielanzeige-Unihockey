@@ -27,12 +27,13 @@ namespace Umsetzung_III.Stores
 
         public SpielzeitStore(int duration, SpielanzeigeViewModel viewModel)
         {
+            Console.Beep(350, 1000);
+
             _viewModel = viewModel;
             _duration = duration;
 
             _sekunde = 0;
             _minute = _duration;
-
         }
 
         public void Reset()
@@ -40,6 +41,8 @@ namespace Umsetzung_III.Stores
             _minute = _duration;
             _sekunde = 0;
             SpielzeitChanged();
+            CheckEffektiveSpielzeit();
+
         }
         public void MinutePlusOne()
         {
@@ -106,7 +109,7 @@ namespace Umsetzung_III.Stores
 
             WennSpielzeitAbgelaufen();
 
-            Console.Beep(250, 2000);
+            Console.Beep(350, 2000);
 
             Timer wartezeit = new Timer(3000);
             wartezeit.Start();

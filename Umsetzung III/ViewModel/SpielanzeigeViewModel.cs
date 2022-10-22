@@ -63,6 +63,14 @@ namespace Umsetzung_III
         {
             get { return _strafenGast.StrafeIsRunning; }
         }
+        public int HeimStrafenAnzeigeGroesse
+        {
+            get { return _strafenHeim.StrafenAnzeigeGroesse; }
+        }
+        public int GastStrafenAnzeigeGroesse
+        {
+            get { return _strafenGast.StrafenAnzeigeGroesse; }
+        }
         public int Halbzeit
         {
             get { return _spielanzeige.Halbzeit; }
@@ -139,12 +147,12 @@ namespace Umsetzung_III
         public ICommand TimePlusOne { get; }
 
         public ICommand HeimStrafeZwei { get; }
-        public ICommand HeimStrafeFuenf { get; }
+        public ICommand HeimStrafeVier { get; }
         public ICommand HeimStrafeZehn { get; }
         public ICommand HeimStrafeDelete { get; }
 
         public ICommand GastStrafeZwei { get; }
-        public ICommand GastStrafeFuenf { get; }
+        public ICommand GastStrafeVier { get; }
         public ICommand GastStrafeZehn { get; }
         public ICommand GastStrafeDelete { get; }
 
@@ -165,7 +173,6 @@ namespace Umsetzung_III
 
         public SpielanzeigeViewModel()
         {
-            Console.Beep(250, 1000);
             // Initialisierung des Models und der Stores
             _spielanzeige = new SpielanzeigeModel();
             _timerStore = new TimerStore();
@@ -184,6 +191,8 @@ namespace Umsetzung_III
 
             _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged; 
             _strafenGast.OnStrafenChanged += StrafenGast_StrafenChanged;
+            _strafenHeim.OnStrafenAnzeigeGroesseChanged += StrafenHeim_OnStrafenAnzeigeGroesseChanged;
+            _strafenGast.OnStrafenAnzeigeGroesseChanged += StrafenGast_OnStrafenAnzeigeGroesseChanged;
 
 
             _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged; ;
@@ -207,13 +216,13 @@ namespace Umsetzung_III
 
             // Buttons fuer die Kontrolle der Strafen: Gast
             GastStrafeZwei = new StrafenCommand(_strafenGast, Strafe.Zwei);
-            GastStrafeFuenf = new StrafenCommand(_strafenGast, Strafe.Fuenf);
+            GastStrafeVier = new StrafenCommand(_strafenGast, Strafe.Vier);
             GastStrafeZehn = new StrafenCommand(_strafenGast, Strafe.Zehn);
             GastStrafeDelete = new StrafenCommand(_strafenGast, Strafe.Reset);
 
             // Buttons fuer die Kontrolle der Strafen: Heim
             HeimStrafeZwei = new StrafenCommand(_strafenHeim, Strafe.Zwei);
-            HeimStrafeFuenf = new StrafenCommand(_strafenHeim, Strafe.Fuenf);
+            HeimStrafeVier = new StrafenCommand(_strafenHeim, Strafe.Vier);
             HeimStrafeZehn = new StrafenCommand(_strafenHeim, Strafe.Zehn);
             HeimStrafeDelete = new StrafenCommand(_strafenHeim, Strafe.Reset);
 
@@ -256,6 +265,16 @@ namespace Umsetzung_III
         private void StrafenGast_StrafenChanged()
         {
             _logoStore.CheckIfLogoMustBeVisible();
+        }
+
+        private void StrafenGast_OnStrafenAnzeigeGroesseChanged()
+        {
+            OnPropertyChanged("GastStrafenAnzeigeGroesse");
+        }
+
+        private void StrafenHeim_OnStrafenAnzeigeGroesseChanged()
+        {
+            OnPropertyChanged("HeimStrafenAnzeigeGroesse");
         }
 
         private void LogoStore_LogoVisibilityChanged()
