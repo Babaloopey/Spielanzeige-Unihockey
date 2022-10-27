@@ -52,6 +52,9 @@ namespace Umsetzung_III
                         _timerStore.Stop();
                     }
                     break;
+                case ZeitAktion.StartPausenzeit:
+                    _spielzeitStore.startPausenzeit();
+                    break;
             }
         }
     }

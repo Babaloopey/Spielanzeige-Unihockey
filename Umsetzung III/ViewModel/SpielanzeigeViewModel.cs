@@ -28,8 +28,9 @@ namespace Umsetzung_III
         // Properties, die von der View abgefragt werden, um Buttons zu verstecken/ anzuzeigen
         public bool ButtonVisibilityStart => _timerStore.ButtonVisibilityStart;
         public bool ButtonVisibilityStop => !_timerStore.ButtonVisibilityStart;
-        public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
+
         public bool LogoVisibility => _logoStore.LogoVisibility;
+        public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
 
         // Properties, die von der View abgefragt werden, um Informationen darzustellen
         public string Spielzeit
@@ -145,6 +146,7 @@ namespace Umsetzung_III
         public ICommand ResetAll { get; }
         public ICommand TimeMinusOne { get; }
         public ICommand TimePlusOne { get; }
+        public ICommand StartPausenzeit { get; }
 
         public ICommand HeimStrafeZwei { get; }
         public ICommand HeimStrafeVier { get; }
@@ -179,7 +181,7 @@ namespace Umsetzung_III
             _strafenGast = new StrafenStore(this);
             _strafenHeim = new StrafenStore(this);
             _logoStore = new LogoStore(this);
-            _spielzeitStore = new SpielzeitStore(20, this);
+            _spielzeitStore = new SpielzeitStore(this);
 
             // EventBinding
             _timerStore.OnButtonVisibilityChanged += TimerStore_ButtonVisibilityChanged;
@@ -188,6 +190,7 @@ namespace Umsetzung_III
             _spielzeitStore.OnSpielzeitChanged += SpielzeitStore_SpielzeitChanged;
             _spielzeitStore.EffektiveSpielzeitVisibilityChanged += SpielzeitStore_EffektiveSpielzeitVisibilityChanged;
             _spielzeitStore.OnSpielzeitAbgelaufen += SpielzeitStore_SpielzeitAbgelaufen;
+            _spielzeitStore.StartPausenzeit += SpielzeitStore_StartPausenzeit;
 
             _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged; 
             _strafenGast.OnStrafenChanged += StrafenGast_StrafenChanged;
@@ -211,6 +214,7 @@ namespace Umsetzung_III
             SpaceButton = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.Space);
             TimeMinusOne = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.MinusOne);
             TimePlusOne = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.PlusOne);
+            StartPausenzeit = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.StartPausenzeit);
 
 
 
@@ -255,6 +259,10 @@ namespace Umsetzung_III
         private void SpielzeitStore_SpielzeitAbgelaufen()
         {
             _timerStore.Stop();
+        }
+        private void SpielzeitStore_StartPausenzeit()
+        {
+            _timerStore.Start();
         }
 
         private void StrafenHeim_StrafenChanged()

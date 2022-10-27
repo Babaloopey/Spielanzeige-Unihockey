@@ -13,10 +13,14 @@ namespace Umsetzung_III.Stores
 
         private int _sekunde;
         private int _minute;
-        private readonly int _duration;
+        private int _duration;
         private int _timerIterations = 0;
+        private int REGULARDURATION = 20;
+        private bool PauseRunning = false;
 
         public bool EffektiveSpielzeitVisibility;
+        public bool PauseMoeglich = true;
+
         public string Spielzeit => _minute.ToString("00") + ":" + _sekunde.ToString("00");
         public int SpielMinute => _minute;
         public int SpielSekunde => _sekunde;
@@ -24,16 +28,37 @@ namespace Umsetzung_III.Stores
         public event Action OnSpielzeitChanged;
         public event Action OnSpielzeitAbgelaufen;
         public event Action EffektiveSpielzeitVisibilityChanged;
+        public event Action StartPausenzeit;
 
-        public SpielzeitStore(int duration, SpielanzeigeViewModel viewModel)
+        public SpielzeitStore( SpielanzeigeViewModel viewModel)
         {
+            _duration = REGULARDURATION;
             Console.Beep(350, 1000);
 
             _viewModel = viewModel;
-            _duration = duration;
 
             _sekunde = 0;
             _minute = _duration;
+        }
+
+        public void startPausenzeit()
+        {
+            if (isHalbzeitOver())
+            {
+                PauseRunning = true;
+                this._minute = 5;
+                WennPauseGestartet();
+                SpielzeitChanged();
+            }
+        }
+
+        public bool isHalbzeitOver()
+        {
+            if(_minute == REGULARDURATION && _sekunde == 0)
+            {
+                return true;
+            }
+            else { return false; }
         }
 
         public void Reset()
@@ -42,7 +67,7 @@ namespace Umsetzung_III.Stores
             _sekunde = 0;
             SpielzeitChanged();
             CheckEffektiveSpielzeit();
-
+            PauseRunning = false;
         }
         public void MinutePlusOne()
         {
@@ -115,11 +140,20 @@ namespace Umsetzung_III.Stores
             wartezeit.Start();
             wartezeit.Elapsed += (sender, args) =>
             {
-
+                CheckWhetherHalbzeitMustBeIncremented();
                 Reset();
-                _viewModel.Halbzeit += 1;
+               
+                
                 wartezeit.Dispose();
             };
+        }
+
+        private void CheckWhetherHalbzeitMustBeIncremented()
+        {
+            if (!PauseRunning)
+            {
+                _viewModel.Halbzeit += 1;
+            }
         }
 
         private void SpielzeitChanged()
@@ -137,5 +171,9 @@ namespace Umsetzung_III.Stores
             OnSpielzeitAbgelaufen?.Invoke();
         }
 
+        private void WennPauseGestartet()
+        {
+            StartPausenzeit?.Invoke();
+        }
     }
 }
