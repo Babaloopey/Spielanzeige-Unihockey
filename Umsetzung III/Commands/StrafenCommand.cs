@@ -31,7 +31,7 @@ namespace Umsetzung_III
                    
                     break;
                 default:
-                    _strafenStore.CreateStrafe(_strafe);
+                    _strafenStore.Create(_strafe);
                     break;
             }
         }

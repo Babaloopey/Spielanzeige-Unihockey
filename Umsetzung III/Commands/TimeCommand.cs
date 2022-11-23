@@ -43,7 +43,7 @@ namespace Umsetzung_III
                     _spielzeitStore.MinuteMinusOne();
                     break;
                 case ZeitAktion.Space:
-                    if (_timerStore.ButtonVisibilityStart == true)
+                    if (_timerStore.IsStartButtonVisible == true)
                     {
                         _timerStore.Start();
                     }

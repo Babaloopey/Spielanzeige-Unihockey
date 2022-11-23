@@ -15,7 +15,7 @@ using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
 {
-    public class SpielanzeigeViewModel : ViewModelBase
+    public class SpielanzeigeViewModel : ViewModelBase                         
     {
         // MemberVariablen
         private readonly SpielanzeigeModel _spielanzeige;
@@ -26,10 +26,10 @@ namespace Umsetzung_III
         private readonly SpielzeitStore _spielzeitStore;
 
         // Properties, die von der View abgefragt werden, um Buttons zu verstecken/ anzuzeigen
-        public bool ButtonVisibilityStart => _timerStore.ButtonVisibilityStart;
-        public bool ButtonVisibilityStop => !_timerStore.ButtonVisibilityStart;
+        public bool ButtonVisibilityStart => _timerStore.IsStartButtonVisible;
+        public bool ButtonVisibilityStop => !_timerStore.IsStartButtonVisible;
 
-        public bool LogoVisibility => _logoStore.LogoVisibility;
+        public bool LogoVisibility => _logoStore.IsLogoVisible;
         public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
 
         // Properties, die von der View abgefragt werden, um Informationen darzustellen
@@ -58,11 +58,11 @@ namespace Umsetzung_III
         }
         public bool HeimTeamStrafeRunning
         {
-            get { return _strafenHeim.StrafeIsRunning; }
+            get { return _strafenHeim.IsStrafeRunning; }
         }
         public bool GastTeamStrafeRunning
         {
-            get { return _strafenGast.StrafeIsRunning; }
+            get { return _strafenGast.IsStrafeRunning; }
         }
         public int HeimStrafenAnzeigeGroesse
         {

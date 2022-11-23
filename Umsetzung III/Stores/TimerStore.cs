@@ -11,7 +11,7 @@ namespace Umsetzung_III
     {
         private readonly Timer _timer;
 
-        public bool ButtonVisibilityStart;
+        public bool IsStartButtonVisible;
 
         public event Action OnButtonVisibilityChanged;
         public event Action OnTimerElapsed;
@@ -20,48 +20,38 @@ namespace Umsetzung_III
             _timer = new Timer(100);
             _timer.Elapsed += Timer_Elapsed;
 
-            ButtonVisibilityStart = true;
+            IsStartButtonVisible = true;
         }
         public void Start()
         {
             _timer.Start();
 
-            ButtonVisibilityStart = false;
+            IsStartButtonVisible = false;
             ButtonVisibilityChanged();
         }
         public void Stop()
         {
             _timer.Stop();
 
-            ButtonVisibilityStart = true;
+            IsStartButtonVisible = true;
             ButtonVisibilityChanged();
         }
         public void Reset()
         {
             _timer.Stop();
 
-            ButtonVisibilityStart = true;
+            IsStartButtonVisible = true;
             ButtonVisibilityChanged();
         }
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            TimerElapsed();
-        }
-
-        private void SpielzeitAbgelaufen()
-        {
-            Stop();
+            OnTimerElapsed?.Invoke();
         }
 
         private void ButtonVisibilityChanged()
         {
             OnButtonVisibilityChanged?.Invoke();
-        }
-
-        private void TimerElapsed()
-        {
-            OnTimerElapsed?.Invoke();
         }
     }
 }

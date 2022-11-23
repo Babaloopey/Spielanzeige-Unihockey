@@ -10,7 +10,7 @@ namespace Umsetzung_III.Stores
     {
         private readonly SpielanzeigeViewModel viewModel;
 
-        public bool LogoVisibility = true;
+        public bool IsLogoVisible = true;
 
         public event Action OnLogoVisibilityChanged;
 
@@ -23,12 +23,12 @@ namespace Umsetzung_III.Stores
         {
                if(!viewModel.GastTeamStrafeRunning && !viewModel.HeimTeamStrafeRunning)
             {
-                LogoVisibility = true;
+                IsLogoVisible = true;
                 LogoVisibilityChanged();
             }
             else
             {
-                LogoVisibility = false;
+                IsLogoVisible = false;
                 LogoVisibilityChanged();
             }
 
