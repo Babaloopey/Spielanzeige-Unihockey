@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Umsetzung_III.Stores
+namespace Umsetzung_III.Controller
 {
-    public class LogoStore
+    public class LogoController
     {
         private readonly SpielanzeigeViewModel viewModel;
 
@@ -14,14 +10,14 @@ namespace Umsetzung_III.Stores
 
         public event Action OnLogoVisibilityChanged;
 
-        public LogoStore(SpielanzeigeViewModel spielanzeigeViewModel)
+        public LogoController(SpielanzeigeViewModel spielanzeigeViewModel)
         {
             viewModel = spielanzeigeViewModel;
         }
 
         public void CheckIfLogoMustBeVisible()
         {
-               if(!viewModel.GastTeamStrafeRunning && !viewModel.HeimTeamStrafeRunning)
+            if (!viewModel.GastTeamStrafeRunning && !viewModel.HeimTeamStrafeRunning)
             {
                 IsLogoVisible = true;
                 LogoVisibilityChanged();

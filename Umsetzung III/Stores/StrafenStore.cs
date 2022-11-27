@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Umsetzung_III.Interface;
 using Umsetzung_III.Model;
 using static Umsetzung_III.Actions;
 
@@ -8,7 +8,7 @@ namespace Umsetzung_III
 {
     public class StrafenStore
     {
-        private readonly SpielanzeigeViewModel _spielanzeigeViewModel;
+        private readonly TimeDeliverer _spielzeitStore;
 
         public ObservableCollection<AngezeigteStrafe> Strafen = new ObservableCollection<AngezeigteStrafe>();
 
@@ -22,14 +22,14 @@ namespace Umsetzung_III
         private int mittlereSchrift = 70;
         private int kleineSchrift = 55;
 
-        public StrafenStore(SpielanzeigeViewModel spielanzeigeviewModel)
+        public StrafenStore(TimeDeliverer spielzeitStore)
         {
-            _spielanzeigeViewModel = spielanzeigeviewModel;
+            _spielzeitStore = spielzeitStore;
 
         }
         public void Create(Strafe strafe)
         {
-            int _strafSekunde = _spielanzeigeViewModel.SpielSekunde;
+            int _strafSekunde = _spielzeitStore.GetActualSpielSecond();
 
             switch (strafe)
             {
@@ -51,7 +51,7 @@ namespace Umsetzung_III
 
         private int CalculateStrafminute(int strafzeit)
         {
-            int strafMinute = _spielanzeigeViewModel.SpielMinute - strafzeit;
+            int strafMinute = _spielzeitStore.GetActualSpielMinute() - strafzeit;
 
             if (strafMinute < 0)
             {

@@ -8,39 +8,42 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
-using System.Windows.Threading;
+using Umsetzung_III.Controller;
 using Umsetzung_III.Model;
 using Umsetzung_III.Stores;
 using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
 {
-    public class SpielanzeigeViewModel : ViewModelBase                         
+    public class SpielanzeigeViewModel : ViewModelBase
     {
         // MemberVariablen
         private readonly SpielanzeigeModel _spielanzeige;
-        private readonly TimerStore _timerStore;
         private readonly StrafenStore _strafenHeim;
         private readonly StrafenStore _strafenGast;
-        private readonly LogoStore _logoStore;
+        private readonly LogoController _logoStore;
+        private readonly EffStrafzeitController _halfTimeStore;
         private readonly SpielzeitStore _spielzeitStore;
+        private readonly PauseOrTimeOutButtonController _pauseOrTimeOutButtonStore;
 
         // Properties, die von der View abgefragt werden, um Buttons zu verstecken/ anzuzeigen
-        public bool ButtonVisibilityStart => _timerStore.IsStartButtonVisible;
-        public bool ButtonVisibilityStop => !_timerStore.IsStartButtonVisible;
+        public bool ButtonVisibilityStart => _spielzeitStore.IsStartButtonVisible;
+        public bool ButtonVisibilityStop => !_spielzeitStore.IsStartButtonVisible;
+        public bool ButtonVisibilityPause => _pauseOrTimeOutButtonStore.IsPauseButtonVisible && ButtonVisibilityStart;
+        public bool ButtonVisibilityTimeOut => !_pauseOrTimeOutButtonStore.IsPauseButtonVisible && ButtonVisibilityStart;
 
         public bool LogoVisibility => _logoStore.IsLogoVisible;
-        public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
+        public bool EffektiveSpielzeitVisibility => _halfTimeStore.IsEffektiveSpielzeitVisible; //public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
 
         // Properties, die von der View abgefragt werden, um Informationen darzustellen
         public string Spielzeit
         {
-            get { return _spielzeitStore.Spielzeit; }
+            get { return SpielMinute.ToString("00") + ":" + SpielSekunde.ToString("00"); }
         }
         public int SpielMinute
-        { get { return _spielzeitStore.SpielMinute; } }
+        { get { return _spielzeitStore.Minute; } }
         public int SpielSekunde
-        { get { return _spielzeitStore.SpielSekunde; } }
+        { get { return _spielzeitStore.Second; } }
         public ObservableCollection<AngezeigteStrafe> HeimTeamStrafe
         {
             get
@@ -147,6 +150,7 @@ namespace Umsetzung_III
         public ICommand TimeMinusOne { get; }
         public ICommand TimePlusOne { get; }
         public ICommand StartPausenzeit { get; }
+        public ICommand StartTimeOut { get; }
 
         public ICommand HeimStrafeZwei { get; }
         public ICommand HeimStrafeVier { get; }
@@ -162,7 +166,6 @@ namespace Umsetzung_III
         public void ResetViewModel()
         {
             _spielanzeige.ResetModel();
-            _timerStore.Reset();
             _spielzeitStore.Reset();
             _strafenGast.Reset();
             _strafenHeim.Reset();
@@ -177,28 +180,29 @@ namespace Umsetzung_III
         {
             // Initialisierung des Models und der Stores
             _spielanzeige = new SpielanzeigeModel();
-            _timerStore = new TimerStore();
-            _strafenGast = new StrafenStore(this);
-            _strafenHeim = new StrafenStore(this);
-            _logoStore = new LogoStore(this);
+            _logoStore = new LogoController(this);
             _spielzeitStore = new SpielzeitStore(this);
+            _strafenGast = new StrafenStore(_spielzeitStore);
+            _strafenHeim = new StrafenStore(_spielzeitStore);
+            _halfTimeStore = new EffStrafzeitController(this, _spielzeitStore);
+            _pauseOrTimeOutButtonStore = new PauseOrTimeOutButtonController(this);
 
             // EventBinding
-            _timerStore.OnButtonVisibilityChanged += TimerStore_ButtonVisibilityChanged;
-            _timerStore.OnTimerElapsed += TimerStore_TimerElapsed;
+            _spielzeitStore.OnStartButtonVisibilityChanged += SpielzeitStore_ButtonVisibilityChanged;
 
             _spielzeitStore.OnSpielzeitChanged += SpielzeitStore_SpielzeitChanged;
-            _spielzeitStore.EffektiveSpielzeitVisibilityChanged += SpielzeitStore_EffektiveSpielzeitVisibilityChanged;
-            _spielzeitStore.OnSpielzeitAbgelaufen += SpielzeitStore_SpielzeitAbgelaufen;
-            _spielzeitStore.StartPausenzeit += SpielzeitStore_StartPausenzeit;
+         //   _spielzeitStore.EffektiveSpielzeitVisibilityChanged += SpielzeitStore_EffektiveSpielzeitVisibilityChanged;
 
-            _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged; 
+
+            _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged;
             _strafenGast.OnStrafenChanged += StrafenGast_StrafenChanged;
             _strafenHeim.OnStrafenAnzeigeGroesseChanged += StrafenHeim_OnStrafenAnzeigeGroesseChanged;
             _strafenGast.OnStrafenAnzeigeGroesseChanged += StrafenGast_OnStrafenAnzeigeGroesseChanged;
 
 
-            _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged; ;
+            _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged;
+            _halfTimeStore.OnEffektiveSpielzeitVisibilityChanged += HalfTimeStore_EffektiveSpielzeitVisibilityChanged;
+            _pauseOrTimeOutButtonStore.OnButtonVisibilityChanged += PauseOrTimeOutButtonStore_ButtonVisibilityChanged;
 
             // Zuteilung fuer Buttons
             // Buttons fuer die Kontrolle des Punktestandes
@@ -208,15 +212,14 @@ namespace Umsetzung_III
             HeimScoreDown = new ScoreCommand(this, Team.Heim, StandVeraenderung.Runter);
 
             // Buttons fuer die Kontrolle der Spielzeit
-            StartTime = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.Start);
-            StopTime = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.Stop);
-            ResetTime = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.Reset);
-            SpaceButton = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.Space);
-            TimeMinusOne = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.MinusOne);
-            TimePlusOne = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.PlusOne);
-            StartPausenzeit = new TimeCommand(_timerStore, _spielzeitStore, ZeitAktion.StartPausenzeit);
-
-
+            StartTime = new TimeCommand(_spielzeitStore, ZeitAktion.Start);
+            StopTime = new TimeCommand(_spielzeitStore, ZeitAktion.Stop);
+            ResetTime = new TimeCommand(_spielzeitStore, ZeitAktion.Reset);
+            SpaceButton = new TimeCommand(_spielzeitStore, ZeitAktion.Space);
+            TimeMinusOne = new TimeCommand(_spielzeitStore, ZeitAktion.MinusOne);
+            TimePlusOne = new TimeCommand(_spielzeitStore, ZeitAktion.PlusOne);
+            StartPausenzeit = new TimeCommand(_spielzeitStore, ZeitAktion.StartPausenzeit);
+            StartTimeOut = new TimeCommand(_spielzeitStore, ZeitAktion.StartTimeOut);
 
             // Buttons fuer die Kontrolle der Strafen: Gast
             GastStrafeZwei = new StrafenCommand(_strafenGast, Strafe.Zwei);
@@ -236,38 +239,32 @@ namespace Umsetzung_III
 
         // Funktionen, die an die Events der Stores gebunden sind: Im Konstruktor verlinkt
 
-        private void TimerStore_ButtonVisibilityChanged()
+        private void SpielzeitStore_ButtonVisibilityChanged()
         {
             OnPropertyChanged("ButtonVisibilityStart");
             OnPropertyChanged("ButtonVisibilityStop");
+            OnPropertyChanged("ButtonVisibilityPause");
+            OnPropertyChanged("ButtonVisibilityTimeOut");
         }
         private void TimerStore_TimerElapsed()
         {
             //_strafenGast.CheckIfStrafeStillActive();
             //_strafenHeim.CheckIfStrafeStillActive();
-            _spielzeitStore.TimerElapsed();
         }
 
-        private void SpielzeitStore_EffektiveSpielzeitVisibilityChanged()
+        private void HalfTimeStore_EffektiveSpielzeitVisibilityChanged()
         {
             OnPropertyChanged("EffektiveSpielzeitVisibility");
         }
         private void SpielzeitStore_SpielzeitChanged()
         {
+            _halfTimeStore.CheckIfEffektiveSpielzeitMustBeVisible();
             OnPropertyChanged("Spielzeit");
-        }
-        private void SpielzeitStore_SpielzeitAbgelaufen()
-        {
-            _timerStore.Stop();
-        }
-        private void SpielzeitStore_StartPausenzeit()
-        {
-            _timerStore.Start();
         }
 
         private void StrafenHeim_StrafenChanged()
         {
-            _logoStore.CheckIfLogoMustBeVisible();        
+            _logoStore.CheckIfLogoMustBeVisible();
         }
 
         private void StrafenGast_StrafenChanged()
@@ -288,6 +285,11 @@ namespace Umsetzung_III
         private void LogoStore_LogoVisibilityChanged()
         {
             OnPropertyChanged("LogoVisibility");
+        }
+        private void PauseOrTimeOutButtonStore_ButtonVisibilityChanged()
+        {
+            OnPropertyChanged("ButtonVisibilityPause");
+            OnPropertyChanged("ButtonVisibilityTimeOut");
         }
     }
 }
