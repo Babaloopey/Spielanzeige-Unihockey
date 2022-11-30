@@ -79,5 +79,9 @@ namespace Umsetzung_III.TimerStates
         {
             return second;
         }
+        public int GetDuration()
+        {
+            return durationMinute;
+        }
     }
 }

@@ -11,8 +11,7 @@ namespace Umsetzung_III.Stores
         private State timerState;
         private State timeOutState;
         private State pausenState;
-
-        State spielzeitState;
+        private State spielzeitState;
 
         public int Minute => timerState.GetMinute();
         public int Second => timerState.GetSecond();
@@ -114,6 +113,11 @@ namespace Umsetzung_III.Stores
         public int GetActualSpielSecond()
         {
             return spielzeitState.GetSecond();
+        }
+
+        public int GetDurationOfHalfTime()
+        {
+            return spielzeitState.GetDuration();
         }
     }
 }

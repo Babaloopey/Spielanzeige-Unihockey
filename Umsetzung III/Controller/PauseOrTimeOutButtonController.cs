@@ -10,12 +10,14 @@ namespace Umsetzung_III.Controller
 
         TimerService _timerStore;
         SpielanzeigeViewModel _viewModel;
+        TimeDeliverer _spielzeitStore;
 
         public event Action OnButtonVisibilityChanged;
 
-        public PauseOrTimeOutButtonController(SpielanzeigeViewModel spielanzeigeViewModel)
+        public PauseOrTimeOutButtonController(SpielanzeigeViewModel spielanzeigeViewModel, TimeDeliverer spielzeitStore)
         {
             _viewModel = spielanzeigeViewModel;
+            _spielzeitStore = spielzeitStore;
 
             _timerStore = new TimerService();
             _timerStore.AddSubscriber(this);
@@ -42,7 +44,7 @@ namespace Umsetzung_III.Controller
 
         private bool IsPausePossibleAndNotVisible()
         {
-            return (_viewModel.SpielMinute == 0 || _viewModel.SpielMinute == 20) && _viewModel.SpielSekunde == 0;
+            return (_viewModel.SpielMinute == 0 || _viewModel.SpielMinute == _spielzeitStore.GetDurationOfHalfTime()) && _viewModel.SpielSekunde == 0;
         }
 
         private void ButtonVisibilityChanged()

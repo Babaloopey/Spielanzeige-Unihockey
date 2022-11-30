@@ -185,7 +185,7 @@ namespace Umsetzung_III
             _strafenGast = new StrafenStore(_spielzeitStore);
             _strafenHeim = new StrafenStore(_spielzeitStore);
             _halfTimeStore = new EffStrafzeitController(this, _spielzeitStore);
-            _pauseOrTimeOutButtonStore = new PauseOrTimeOutButtonController(this);
+            _pauseOrTimeOutButtonStore = new PauseOrTimeOutButtonController(this, _spielzeitStore);
 
             // EventBinding
             _spielzeitStore.OnStartButtonVisibilityChanged += SpielzeitStore_ButtonVisibilityChanged;

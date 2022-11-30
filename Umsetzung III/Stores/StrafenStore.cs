@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Umsetzung_III.Interface;
 using Umsetzung_III.Model;
+using Umsetzung_III.Services;
 using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
@@ -59,22 +61,6 @@ namespace Umsetzung_III
             }
 
             return strafMinute;
-        }
-
-        public void CheckIfStrafeStillActive()
-        {
-            //    secondCounter++;
-            //    if (secondCounter >= 10)
-            //    {
-            //        for (var i = Strafen.Count - 1; i >= 0; i--)
-            //        {
-            //            if (Strafen[i].minute == _spielanzeigeViewModel.SpielMinute && Strafen[i].second == _spielanzeigeViewModel.SpielSekunde)
-            //            {
-            //                RemoveStrafeByIndex(i);
-            //            }
-            //        }
-            //        secondCounter = 0;
-            //    }
         }
 
         public void AdjustStrafenAnzeigeGroesse()
