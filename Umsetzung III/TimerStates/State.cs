@@ -1,4 +1,5 @@
-﻿using Umsetzung_III.Stores;
+﻿using Umsetzung_III.Services;
+using Umsetzung_III.Stores;
 
 namespace Umsetzung_III.TimerStates
 {
@@ -11,6 +12,7 @@ namespace Umsetzung_III.TimerStates
         private int _timerIterations = 0;
 
         protected SpielzeitStore spielzeitStore;
+        protected BuzzerService buzzer = new BuzzerService();
 
         public State(SpielzeitStore spielzeitStore)
         {

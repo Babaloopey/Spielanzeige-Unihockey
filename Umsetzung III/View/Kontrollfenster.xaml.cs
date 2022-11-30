@@ -71,6 +71,10 @@ namespace Umsetzung_III
                 {
                     _viewModel.SpaceButton.Execute(e.Key);
                 }
+                if (e.Key == Key.Enter)
+                {
+                    _viewModel.BuzzerPressed.Execute(e.Key);
+                }
             }
         }
     }

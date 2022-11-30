@@ -24,7 +24,7 @@ namespace Umsetzung_III.TimerStates
         {
             spielzeitStore.Stop();
 
-            Console.Beep(350, 2000);
+            buzzer.Buzz();
 
             Reset();
         }

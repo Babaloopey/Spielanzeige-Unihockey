@@ -12,6 +12,7 @@ namespace Umsetzung_III.Stores
         private State timeOutState;
         private State pausenState;
         private State spielzeitState;
+        private BuzzerService buzzer = new BuzzerService();
 
         public int Minute => timerState.GetMinute();
         public int Second => timerState.GetSecond();
@@ -27,7 +28,7 @@ namespace Umsetzung_III.Stores
         public SpielzeitStore(SpielanzeigeViewModel viewModel)
         {
 
-            Console.Beep(350, 1000);
+            buzzer.Buzz();
 
             _timerStore = new TimerService();
             _timerStore.AddSubscriber(this);

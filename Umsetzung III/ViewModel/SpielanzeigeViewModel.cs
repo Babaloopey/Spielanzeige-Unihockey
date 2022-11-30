@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using Umsetzung_III.Commands;
 using Umsetzung_III.Controller;
 using Umsetzung_III.Model;
 using Umsetzung_III.Stores;
@@ -162,6 +163,8 @@ namespace Umsetzung_III
         public ICommand GastStrafeZehn { get; }
         public ICommand GastStrafeDelete { get; }
 
+        public ICommand BuzzerPressed { get; }
+
         // Zuruecksetzen des gesamten ViewModels auf den Anfangszustand
         public void ResetViewModel()
         {
@@ -235,6 +238,7 @@ namespace Umsetzung_III
 
             // Button um das ViewModel zurueckzusetzen
             ResetAll = new ResetAllCommand(this);
+            BuzzerPressed = new BuzzerCommand();
         }
 
         // Funktionen, die an die Events der Stores gebunden sind: Im Konstruktor verlinkt
