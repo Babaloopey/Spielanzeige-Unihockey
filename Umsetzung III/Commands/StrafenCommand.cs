@@ -19,7 +19,7 @@ namespace Umsetzung_III
         {
             switch (_strafe)
             {
-                case Strafe.Reset:
+                case Strafe.Delete:
                     if(parameter != null)
                     {
                         _strafenStore.Delete(parameter);

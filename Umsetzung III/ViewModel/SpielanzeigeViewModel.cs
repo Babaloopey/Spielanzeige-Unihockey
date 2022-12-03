@@ -228,13 +228,13 @@ namespace Umsetzung_III
             GastStrafeZwei = new StrafenCommand(_strafenGast, Strafe.Zwei);
             GastStrafeVier = new StrafenCommand(_strafenGast, Strafe.Vier);
             GastStrafeZehn = new StrafenCommand(_strafenGast, Strafe.Zehn);
-            GastStrafeDelete = new StrafenCommand(_strafenGast, Strafe.Reset);
+            GastStrafeDelete = new StrafenCommand(_strafenGast, Strafe.Delete);
 
             // Buttons fuer die Kontrolle der Strafen: Heim
             HeimStrafeZwei = new StrafenCommand(_strafenHeim, Strafe.Zwei);
             HeimStrafeVier = new StrafenCommand(_strafenHeim, Strafe.Vier);
             HeimStrafeZehn = new StrafenCommand(_strafenHeim, Strafe.Zehn);
-            HeimStrafeDelete = new StrafenCommand(_strafenHeim, Strafe.Reset);
+            HeimStrafeDelete = new StrafenCommand(_strafenHeim, Strafe.Delete);
 
             // Button um das ViewModel zurueckzusetzen
             ResetAll = new ResetAllCommand(this);
