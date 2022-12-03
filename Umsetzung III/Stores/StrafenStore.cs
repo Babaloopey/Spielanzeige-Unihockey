@@ -15,14 +15,18 @@ namespace Umsetzung_III
         public ObservableCollection<AngezeigteStrafe> Strafen = new ObservableCollection<AngezeigteStrafe>();
 
         public bool IsStrafeRunning => Strafen.Count > 0 ? true : false;
-        public int StrafenAnzeigeGroesse = 0;
+        public Schrift StrafenAnzeigeGroesse = 0;
 
         public event Action OnStrafenChanged;
         public event Action OnStrafenAnzeigeGroesseChanged;
 
-        private int grosseSchrift = 100;
-        private int mittlereSchrift = 70;
-        private int kleineSchrift = 55;
+        public enum Schrift
+        {
+            gross = 100,
+            mittel = 70,
+            klein = 55
+        }
+
 
         public StrafenStore(TimeDeliverer spielzeitStore)
         {
@@ -67,15 +71,15 @@ namespace Umsetzung_III
         {
             if(Strafen.Count == 1)
             {
-                StrafenAnzeigeGroesse = grosseSchrift;
+                StrafenAnzeigeGroesse = Schrift.gross;
             }
             else if(Strafen.Count == 2)
             {
-                StrafenAnzeigeGroesse = mittlereSchrift;
+                StrafenAnzeigeGroesse = Schrift.mittel;
             }
             else
             {
-                StrafenAnzeigeGroesse = kleineSchrift;
+                StrafenAnzeigeGroesse = Schrift.klein;
             }
         }
 

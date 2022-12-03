@@ -70,11 +70,46 @@ namespace Umsetzung_III
         }
         public int HeimStrafenAnzeigeGroesse
         {
-            get { return _strafenHeim.StrafenAnzeigeGroesse; }
+            get { return (int)_strafenHeim.StrafenAnzeigeGroesse; }
+        }
+        public string HeimStrafeMargin
+        {
+            get{
+                if (_strafenHeim.StrafenAnzeigeGroesse == StrafenStore.Schrift.gross)
+                {
+                    return "0,-40,0,0";
+                }
+                else if (_strafenHeim.StrafenAnzeigeGroesse == StrafenStore.Schrift.mittel)
+                {
+                    return "60,-60,0,0";
+                }
+                else
+                {
+                    return "60,-80,0,0";
+                }
+            }
         }
         public int GastStrafenAnzeigeGroesse
         {
-            get { return _strafenGast.StrafenAnzeigeGroesse; }
+            get { return (int)_strafenGast.StrafenAnzeigeGroesse; }
+        }
+        public string GastStrafeMargin
+        {
+            get
+            {
+                if (_strafenGast.StrafenAnzeigeGroesse == StrafenStore.Schrift.gross)
+                {
+                    return "0,-40,0,0";
+                }
+                else if (_strafenGast.StrafenAnzeigeGroesse == StrafenStore.Schrift.mittel)
+                {
+                    return "0,-60,60,0";
+                }
+                else
+                {
+                    return "0,-80,60,0";
+                }
+            }
         }
         public int Halbzeit
         {
@@ -194,7 +229,7 @@ namespace Umsetzung_III
             _spielzeitStore.OnStartButtonVisibilityChanged += SpielzeitStore_ButtonVisibilityChanged;
 
             _spielzeitStore.OnSpielzeitChanged += SpielzeitStore_SpielzeitChanged;
-         //   _spielzeitStore.EffektiveSpielzeitVisibilityChanged += SpielzeitStore_EffektiveSpielzeitVisibilityChanged;
+            //   _spielzeitStore.EffektiveSpielzeitVisibilityChanged += SpielzeitStore_EffektiveSpielzeitVisibilityChanged;
 
 
             _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged;
@@ -279,11 +314,14 @@ namespace Umsetzung_III
         private void StrafenGast_OnStrafenAnzeigeGroesseChanged()
         {
             OnPropertyChanged("GastStrafenAnzeigeGroesse");
+            OnPropertyChanged("GastStrafeMargin");
+
         }
 
         private void StrafenHeim_OnStrafenAnzeigeGroesseChanged()
         {
             OnPropertyChanged("HeimStrafenAnzeigeGroesse");
+            OnPropertyChanged("HeimStrafeMargin");
         }
 
         private void LogoStore_LogoVisibilityChanged()
