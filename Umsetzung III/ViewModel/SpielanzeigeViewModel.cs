@@ -26,6 +26,7 @@ namespace Umsetzung_III
         private readonly EffStrafzeitController _halfTimeStore;
         private readonly SpielzeitStore _spielzeitStore;
         private readonly PauseOrTimeOutButtonController _pauseOrTimeOutButtonStore;
+        private readonly StrafenStyleController strafenStyle;
 
         // Properties, die von der View abgefragt werden, um Buttons zu verstecken/ anzuzeigen
         public bool ButtonVisibilityStart => _spielzeitStore.IsStartButtonVisible;
@@ -75,18 +76,7 @@ namespace Umsetzung_III
         public string HeimStrafeMargin
         {
             get{
-                if (_strafenHeim.StrafenAnzeigeGroesse == StrafenStore.Schrift.gross)
-                {
-                    return "0,-40,0,0";
-                }
-                else if (_strafenHeim.StrafenAnzeigeGroesse == StrafenStore.Schrift.mittel)
-                {
-                    return "60,-60,0,0";
-                }
-                else
-                {
-                    return "60,-80,0,0";
-                }
+                return strafenStyle.GetStrafenHeimMargin();
             }
         }
         public int GastStrafenAnzeigeGroesse
@@ -97,18 +87,14 @@ namespace Umsetzung_III
         {
             get
             {
-                if (_strafenGast.StrafenAnzeigeGroesse == StrafenStore.Schrift.gross)
-                {
-                    return "0,-40,0,0";
-                }
-                else if (_strafenGast.StrafenAnzeigeGroesse == StrafenStore.Schrift.mittel)
-                {
-                    return "0,-60,60,0";
-                }
-                else
-                {
-                    return "0,-80,60,0";
-                }
+               return strafenStyle.GetStrafenGastMargin();
+            }
+        }
+        public string ResetButtonContent
+        {
+            get
+            {
+                return _spielzeitStore.GetResetButtonContent();
             }
         }
         public int Halbzeit
@@ -224,6 +210,7 @@ namespace Umsetzung_III
             _strafenHeim = new StrafenStore(_spielzeitStore);
             _halfTimeStore = new EffStrafzeitController(this, _spielzeitStore);
             _pauseOrTimeOutButtonStore = new PauseOrTimeOutButtonController(this, _spielzeitStore);
+            strafenStyle = new StrafenStyleController(_strafenHeim, _strafenGast);
 
             // EventBinding
             _spielzeitStore.OnStartButtonVisibilityChanged += SpielzeitStore_ButtonVisibilityChanged;
@@ -241,6 +228,8 @@ namespace Umsetzung_III
             _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged;
             _halfTimeStore.OnEffektiveSpielzeitVisibilityChanged += HalfTimeStore_EffektiveSpielzeitVisibilityChanged;
             _pauseOrTimeOutButtonStore.OnButtonVisibilityChanged += PauseOrTimeOutButtonStore_ButtonVisibilityChanged;
+
+            _spielzeitStore.OnTimeModeChanged += SpielzeitStore_ResetButtonContentChanged;
 
             // Zuteilung fuer Buttons
             // Buttons fuer die Kontrolle des Punktestandes
@@ -285,11 +274,6 @@ namespace Umsetzung_III
             OnPropertyChanged("ButtonVisibilityPause");
             OnPropertyChanged("ButtonVisibilityTimeOut");
         }
-        private void TimerStore_TimerElapsed()
-        {
-            //_strafenGast.CheckIfStrafeStillActive();
-            //_strafenHeim.CheckIfStrafeStillActive();
-        }
 
         private void HalfTimeStore_EffektiveSpielzeitVisibilityChanged()
         {
@@ -332,6 +316,11 @@ namespace Umsetzung_III
         {
             OnPropertyChanged("ButtonVisibilityPause");
             OnPropertyChanged("ButtonVisibilityTimeOut");
+        }
+        private void SpielzeitStore_ResetButtonContentChanged()
+        {
+            OnPropertyChanged("ResetButtonContent");
+
         }
     }
 }

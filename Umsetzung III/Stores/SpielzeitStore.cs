@@ -23,7 +23,7 @@ namespace Umsetzung_III.Stores
 
         public event Action OnStartButtonVisibilityChanged;
         public event Action OnSpielzeitChanged;
-
+        public event Action OnTimeModeChanged;
 
         public SpielzeitStore(SpielanzeigeViewModel viewModel)
         {
@@ -88,14 +88,17 @@ namespace Umsetzung_III.Stores
         public void SetSpielzeitState()
         {
             timerState = spielzeitState;
+            TimeModeChanged();
         }
         public void SetPausenState()
         {
             timerState = pausenState;
+            TimeModeChanged();
         }
         public void SetTimeOutState()
         {
             timerState = timeOutState;
+            TimeModeChanged();
         }
         private void StartButtonVisibilityChanged()
         {
@@ -104,6 +107,10 @@ namespace Umsetzung_III.Stores
         private void SpielzeitChanged()
         {
             OnSpielzeitChanged?.Invoke();
+        }
+        private void TimeModeChanged()
+        {
+            OnTimeModeChanged?.Invoke();
         }
 
         // interface functions
@@ -119,6 +126,15 @@ namespace Umsetzung_III.Stores
         public int GetDurationOfHalfTime()
         {
             return spielzeitState.GetDuration();
+        }
+        public string GetResetButtonContent()
+        {
+            if(timerState.GetType() == spielzeitState.GetType())
+            {
+                return "Reset Zeit";
+            }
+            else { return "Zur Spielzeit"; }
+
         }
     }
 }
