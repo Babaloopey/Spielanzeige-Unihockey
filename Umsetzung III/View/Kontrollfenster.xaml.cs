@@ -46,5 +46,36 @@ namespace Umsetzung_III
         {
             _hauptanzeige.Close();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (MainGrid.IsFocused)
+            {
+                if (e.Key == Key.A)
+                {
+                    _viewModel.HeimScoreDown.Execute(e.Key);
+                }
+                if (e.Key == Key.Q)
+                {
+                    _viewModel.HeimScoreUp.Execute(e.Key);
+                }
+                if (e.Key == Key.S)
+                {
+                    _viewModel.GastScoreDown.Execute(e.Key);
+                }
+                if (e.Key == Key.W)
+                {
+                    _viewModel.GastScoreUp.Execute(e.Key);
+                }
+                if (e.Key == Key.Space)
+                {
+                    _viewModel.SpaceButton.Execute(e.Key);
+                }
+                if (e.Key == Key.Enter)
+                {
+                    _viewModel.BuzzerPressed.Execute(e.Key);
+                }
+            }
+        }
     }
 }

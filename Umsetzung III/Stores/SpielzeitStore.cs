@@ -1,179 +1,140 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+using Umsetzung_III.Interface;
+using Umsetzung_III.Services;
+using Umsetzung_III.TimerStates;
 
 namespace Umsetzung_III.Stores
 {
-    public class SpielzeitStore
+    public class SpielzeitStore : TimeSubscriber, TimeDeliverer
     {
-        private readonly SpielanzeigeViewModel _viewModel;
+        private TimerService _timerStore;
+        private State timerState;
+        private State timeOutState;
+        private State pausenState;
+        private State spielzeitState;
+        private BuzzerService buzzer = new BuzzerService();
 
-        private int _sekunde;
-        private int _minute;
-        private int _duration;
-        private int _timerIterations = 0;
-        private int REGULARDURATION = 20;
-        private bool PauseRunning = false;
+        public int Minute => timerState.GetMinute();
+        public int Second => timerState.GetSecond();
 
-        public bool EffektiveSpielzeitVisibility;
-        public bool PauseMoeglich = true;
+        private bool IsTimeRunning = false;
 
-        public string Spielzeit => _minute.ToString("00") + ":" + _sekunde.ToString("00");
-        public int SpielMinute => _minute;
-        public int SpielSekunde => _sekunde;
+        public bool IsStartButtonVisible = true;
 
+        public event Action OnStartButtonVisibilityChanged;
         public event Action OnSpielzeitChanged;
-        public event Action OnSpielzeitAbgelaufen;
-        public event Action EffektiveSpielzeitVisibilityChanged;
-        public event Action StartPausenzeit;
+        public event Action OnTimeModeChanged;
 
-        public SpielzeitStore( SpielanzeigeViewModel viewModel)
+        public SpielzeitStore(SpielanzeigeViewModel viewModel)
         {
-            _duration = REGULARDURATION;
-            Console.Beep(350, 1000);
 
-            _viewModel = viewModel;
+            buzzer.Buzz();
 
-            _sekunde = 0;
-            _minute = _duration;
+            _timerStore = new TimerService();
+            _timerStore.AddSubscriber(this);
+
+            spielzeitState = new SpielzeitState(this, viewModel);
+            timeOutState = new TimeOutState(this);
+            pausenState = new PausenState(this);
+
+            timerState = spielzeitState;
         }
 
-        public void startPausenzeit()
+        public void Start()
         {
-            if (isHalbzeitOver())
-            {
-                PauseRunning = true;
-                this._minute = 5;
-                WennPauseGestartet();
-                SpielzeitChanged();
-            }
+            IsTimeRunning = true;
+            IsStartButtonVisible = false;
+            StartButtonVisibilityChanged();
         }
-
-        public bool isHalbzeitOver()
+        public void Stop()
         {
-            if(_minute == REGULARDURATION && _sekunde == 0)
-            {
-                return true;
-            }
-            else { return false; }
+            IsTimeRunning = false;
+            IsStartButtonVisible = true;
+            StartButtonVisibilityChanged();
         }
-
         public void Reset()
         {
-            _minute = _duration;
-            _sekunde = 0;
-            SpielzeitChanged();
-            CheckEffektiveSpielzeit();
-            PauseRunning = false;
-        }
-        public void MinutePlusOne()
-        {
-            _minute++;
-            SpielzeitChanged();
-            CheckEffektiveSpielzeit();
+            timerState.Reset();
         }
         public void MinuteMinusOne()
         {
-            if (_minute > 0)
-            {
-                _minute--;
-                SpielzeitChanged();
-                CheckEffektiveSpielzeit();
-            }
+            timerState.MinuteMinusOne();
+            SpielzeitChanged();
         }
-
-        public void TimerElapsed()
+        public void MinutePlusOne()
         {
-            _timerIterations++;
-
-            if (_timerIterations >= 10)
-            {
-                CountOneSecond();
-            }
-        }
-
-        private void CountOneSecond()
-        {
-            _timerIterations = 0;
-
-            if (_minute == 0 && _sekunde == 0)
-            {
-                SpielzeitAbgelaufen();
-            }
-            else if (_sekunde == 0)
-            {
-                MinuteMinusOne();
-                _sekunde = 59;
-            }
-            else
-            {
-                _sekunde--;
-            }
-
+            timerState.MinutePlusOne();
             SpielzeitChanged();
         }
 
-        private void CheckEffektiveSpielzeit()
+        public void StartPause()
         {
-            if (_minute < 3 && _viewModel.Halbzeit == 2)
-            {
-                EffektiveSpielzeitVisibility = true;
-            }
-            else
-            {
-                EffektiveSpielzeitVisibility = false;
-            }
-            EffektiveSpielzeitChanged();
+            timerState.StartPause();
+        }
+        public void StartTimeOut()
+        {
+            timerState.StartTimeOut();
         }
 
-        private void SpielzeitAbgelaufen()
+        public void TimeElapsed()
         {
-
-            WennSpielzeitAbgelaufen();
-
-            Console.Beep(350, 2000);
-
-            Timer wartezeit = new Timer(3000);
-            wartezeit.Start();
-            wartezeit.Elapsed += (sender, args) =>
+            SpielzeitChanged();
+            if (IsTimeRunning)
             {
-                CheckWhetherHalbzeitMustBeIncremented();
-                Reset();
-               
-                
-                wartezeit.Dispose();
-            };
-        }
-
-        private void CheckWhetherHalbzeitMustBeIncremented()
-        {
-            if (!PauseRunning)
-            {
-                _viewModel.Halbzeit += 1;
+                timerState.TimeElapsed();
             }
         }
 
+        public void SetSpielzeitState()
+        {
+            timerState = spielzeitState;
+            TimeModeChanged();
+        }
+        public void SetPausenState()
+        {
+            timerState = pausenState;
+            TimeModeChanged();
+        }
+        public void SetTimeOutState()
+        {
+            timerState = timeOutState;
+            TimeModeChanged();
+        }
+        private void StartButtonVisibilityChanged()
+        {
+            OnStartButtonVisibilityChanged?.Invoke();
+        }
         private void SpielzeitChanged()
         {
             OnSpielzeitChanged?.Invoke();
         }
-
-        private void EffektiveSpielzeitChanged()
+        private void TimeModeChanged()
         {
-            EffektiveSpielzeitVisibilityChanged?.Invoke();
+            OnTimeModeChanged?.Invoke();
         }
 
-        private void WennSpielzeitAbgelaufen()
+        // interface functions
+        public int GetActualSpielMinute()
         {
-            OnSpielzeitAbgelaufen?.Invoke();
+            return spielzeitState.GetMinute();
+        }
+        public int GetActualSpielSecond()
+        {
+            return spielzeitState.GetSecond();
         }
 
-        private void WennPauseGestartet()
+        public int GetDurationOfHalfTime()
         {
-            StartPausenzeit?.Invoke();
+            return spielzeitState.GetDuration();
+        }
+        public string GetResetButtonContent()
+        {
+            if(timerState.GetType() == spielzeitState.GetType())
+            {
+                return "Reset Zeit";
+            }
+            else { return "Zur Spielzeit"; }
+
         }
     }
 }

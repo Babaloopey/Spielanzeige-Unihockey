@@ -1,35 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using Umsetzung_III.Interface;
 using Umsetzung_III.Model;
+using Umsetzung_III.Services;
 using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
 {
     public class StrafenStore
     {
-        private readonly SpielanzeigeViewModel _spielanzeigeViewModel;
+        private readonly TimeDeliverer _spielzeitStore;
 
         public ObservableCollection<AngezeigteStrafe> Strafen = new ObservableCollection<AngezeigteStrafe>();
 
         public bool IsStrafeRunning => Strafen.Count > 0 ? true : false;
-        public int StrafenAnzeigeGroesse = 0;
+        public Schrift StrafenAnzeigeGroesse = 0;
 
         public event Action OnStrafenChanged;
         public event Action OnStrafenAnzeigeGroesseChanged;
 
-        private int grosseSchrift = 100;
-        private int mittlereSchrift = 70;
-        private int kleineSchrift = 55;
-
-        public StrafenStore(SpielanzeigeViewModel spielanzeigeviewModel)
+        public enum Schrift
         {
-            _spielanzeigeViewModel = spielanzeigeviewModel;
+            gross = 100,
+            mittel = 70,
+            klein = 55
+        }
+
+
+        public StrafenStore(TimeDeliverer spielzeitStore)
+        {
+            _spielzeitStore = spielzeitStore;
 
         }
         public void Create(Strafe strafe)
         {
-            int _strafSekunde = _spielanzeigeViewModel.SpielSekunde;
+            int _strafSekunde = _spielzeitStore.GetActualSpielSecond();
 
             switch (strafe)
             {
@@ -51,7 +57,7 @@ namespace Umsetzung_III
 
         private int CalculateStrafminute(int strafzeit)
         {
-            int strafMinute = _spielanzeigeViewModel.SpielMinute - strafzeit;
+            int strafMinute = _spielzeitStore.GetActualSpielMinute() - strafzeit;
 
             if (strafMinute < 0)
             {
@@ -61,35 +67,19 @@ namespace Umsetzung_III
             return strafMinute;
         }
 
-        public void CheckIfStrafeStillActive()
-        {
-            //    secondCounter++;
-            //    if (secondCounter >= 10)
-            //    {
-            //        for (var i = Strafen.Count - 1; i >= 0; i--)
-            //        {
-            //            if (Strafen[i].minute == _spielanzeigeViewModel.SpielMinute && Strafen[i].second == _spielanzeigeViewModel.SpielSekunde)
-            //            {
-            //                RemoveStrafeByIndex(i);
-            //            }
-            //        }
-            //        secondCounter = 0;
-            //    }
-        }
-
         public void AdjustStrafenAnzeigeGroesse()
         {
             if(Strafen.Count == 1)
             {
-                StrafenAnzeigeGroesse = grosseSchrift;
+                StrafenAnzeigeGroesse = Schrift.gross;
             }
             else if(Strafen.Count == 2)
             {
-                StrafenAnzeigeGroesse = mittlereSchrift;
+                StrafenAnzeigeGroesse = Schrift.mittel;
             }
             else
             {
-                StrafenAnzeigeGroesse = kleineSchrift;
+                StrafenAnzeigeGroesse = Schrift.klein;
             }
         }
 

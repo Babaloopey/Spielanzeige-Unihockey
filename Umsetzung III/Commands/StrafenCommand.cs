@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
@@ -23,7 +19,7 @@ namespace Umsetzung_III
         {
             switch (_strafe)
             {
-                case Strafe.Reset:
+                case Strafe.Delete:
                     if(parameter != null)
                     {
                         _strafenStore.Delete(parameter);
