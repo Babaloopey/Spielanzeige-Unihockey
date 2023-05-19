@@ -4,7 +4,7 @@ using Umsetzung_III.Services;
 
 namespace Umsetzung_III.Controller
 {
-    internal class PauseOrTimeOutButtonController : TimeSubscriber
+    public class PauseOrTimeOutButtonController : TimeSubscriber
     {
         public bool IsPauseButtonVisible = true;
 

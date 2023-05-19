@@ -114,7 +114,7 @@ namespace Umsetzung_III.Stores
         }
 
         // interface functions
-        public int GetActualSpielMinute()
+        public virtual int GetActualSpielMinute()
         {
             return spielzeitState.GetMinute();
         }
@@ -123,7 +123,7 @@ namespace Umsetzung_III.Stores
             return spielzeitState.GetSecond();
         }
 
-        public int GetDurationOfHalfTime()
+        public virtual int GetDurationOfHalfTime()
         {
             return spielzeitState.GetDuration();
         }

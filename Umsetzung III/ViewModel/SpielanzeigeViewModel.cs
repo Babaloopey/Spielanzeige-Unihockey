@@ -42,9 +42,9 @@ namespace Umsetzung_III
         {
             get { return SpielMinute.ToString("00") + ":" + SpielSekunde.ToString("00"); }
         }
-        public int SpielMinute
+        public virtual int SpielMinute
         { get { return _spielzeitStore.Minute; } }
-        public int SpielSekunde
+        public virtual int SpielSekunde
         { get { return _spielzeitStore.Second; } }
         public ObservableCollection<AngezeigteStrafe> HeimTeamStrafe
         {
@@ -61,11 +61,11 @@ namespace Umsetzung_III
 
             }
         }
-        public bool HeimTeamStrafeRunning
+        public virtual bool HeimTeamStrafeRunning
         {
             get { return _strafenHeim.IsStrafeRunning; }
         }
-        public bool GastTeamStrafeRunning
+        public virtual bool GastTeamStrafeRunning
         {
             get { return _strafenGast.IsStrafeRunning; }
         }
@@ -75,8 +75,9 @@ namespace Umsetzung_III
         }
         public string HeimStrafeMargin
         {
-            get{
-                return strafenStyle.GetStrafenHeimMargin();
+            get
+            {
+                return strafenStyle.GetStrafenMargin(_strafenHeim);
             }
         }
         public int GastStrafenAnzeigeGroesse
@@ -87,7 +88,7 @@ namespace Umsetzung_III
         {
             get
             {
-               return strafenStyle.GetStrafenGastMargin();
+                return strafenStyle.GetStrafenMargin(_strafenGast);
             }
         }
         public string ResetButtonContent
@@ -97,7 +98,7 @@ namespace Umsetzung_III
                 return _spielzeitStore.GetResetButtonContent();
             }
         }
-        public int Halbzeit
+        public virtual int Halbzeit
         {
             get { return _spielanzeige.Halbzeit; }
             set
@@ -210,7 +211,7 @@ namespace Umsetzung_III
             _strafenHeim = new StrafenStore(_spielzeitStore);
             _halfTimeStore = new EffStrafzeitController(this, _spielzeitStore);
             _pauseOrTimeOutButtonStore = new PauseOrTimeOutButtonController(this, _spielzeitStore);
-            strafenStyle = new StrafenStyleController(_strafenHeim, _strafenGast);
+            strafenStyle = new StrafenStyleController();
 
             // EventBinding
             _spielzeitStore.OnStartButtonVisibilityChanged += SpielzeitStore_ButtonVisibilityChanged;

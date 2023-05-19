@@ -15,7 +15,6 @@ namespace Umsetzung_III.TimerStates
             second = durationSecond;
 
             spielanzeige = spielanzeigeViewModel;
-
         }
 
         public override void StartPause()

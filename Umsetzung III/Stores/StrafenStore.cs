@@ -8,6 +8,7 @@ using static Umsetzung_III.Actions;
 
 namespace Umsetzung_III
 {
+
     public class StrafenStore
     {
         private readonly TimeDeliverer _spielzeitStore;
@@ -15,18 +16,11 @@ namespace Umsetzung_III
         public ObservableCollection<AngezeigteStrafe> Strafen = new ObservableCollection<AngezeigteStrafe>();
 
         public bool IsStrafeRunning => Strafen.Count > 0 ? true : false;
-        public Schrift StrafenAnzeigeGroesse = 0;
 
         public event Action OnStrafenChanged;
         public event Action OnStrafenAnzeigeGroesseChanged;
 
-        public enum Schrift
-        {
-            gross = 100,
-            mittel = 70,
-            klein = 55
-        }
-
+        public virtual Schrift StrafenAnzeigeGroesse { get; set; } = 0;
 
         public StrafenStore(TimeDeliverer spielzeitStore)
         {
