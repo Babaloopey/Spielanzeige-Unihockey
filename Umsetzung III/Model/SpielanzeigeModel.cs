@@ -1,7 +1,7 @@
 ﻿
-namespace Umsetzung_III
+namespace Umsetzung_III.Model
 {
-    internal class SpielanzeigeModel
+    public class SpielanzeigeModel
     {
         public string HeimTeamName { get; set; }
         public string GastTeamName { get; set; }

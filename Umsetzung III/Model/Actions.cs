@@ -1,5 +1,5 @@
 ﻿
-namespace Umsetzung_III
+namespace Umsetzung_III.Model
 {
     public class Actions
     {
