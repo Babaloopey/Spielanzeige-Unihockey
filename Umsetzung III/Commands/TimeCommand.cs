@@ -1,11 +1,11 @@
 ﻿
 using Umsetzung_III.Stores;
-using static Umsetzung_III.Actions;
+using static Umsetzung_III.Model.Actions;
 
 namespace Umsetzung_III
 {
     // Command, der je nach ZeitAktion die Spielzeit des TimerStores beeinflusst
-    internal class TimeCommand : CommandBase
+    public class TimeCommand : CommandBase
     {
         private readonly SpielzeitStore _spielzeitStore;
         private readonly ZeitAktion _zeitAktion;

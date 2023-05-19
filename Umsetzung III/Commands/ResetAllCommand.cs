@@ -2,7 +2,7 @@
 namespace Umsetzung_III
 {
     // Command, der im ViewModel alles zuruecksetzt
-    internal class ResetAllCommand : CommandBase
+    public class ResetAllCommand : CommandBase
     {
         private readonly SpielanzeigeViewModel _viewModel;
         public ResetAllCommand(SpielanzeigeViewModel viewModel)

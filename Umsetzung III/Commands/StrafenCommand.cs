@@ -1,10 +1,10 @@
 ﻿
-using static Umsetzung_III.Actions;
+using static Umsetzung_III.Model.Actions;
 
 namespace Umsetzung_III
 {
     // Command, der je Nach Strafe und Store beim jeweiligen Team eine Strafe beginnt
-    internal class StrafenCommand: CommandBase
+    public class StrafenCommand: CommandBase
     {
         private readonly Strafe _strafe;
         private readonly StrafenStore _strafenStore;

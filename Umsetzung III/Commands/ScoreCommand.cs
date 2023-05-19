@@ -1,10 +1,11 @@
 ﻿
-using static Umsetzung_III.Actions;
+using static Umsetzung_III.Model.Actions;
 
 namespace Umsetzung_III
 {
+
     // Command, der den Punktestand der Teams je nach Paramter des Buttons veraendert
-    internal class ScoreCommand : CommandBase
+    public class ScoreCommand : CommandBase
     {
         private readonly SpielanzeigeViewModel _spielanzeige;
         private readonly Team _team;
