@@ -12,7 +12,7 @@ using Umsetzung_III.Commands;
 using Umsetzung_III.Controller;
 using Umsetzung_III.Model;
 using Umsetzung_III.Stores;
-using static Umsetzung_III.Actions;
+using static Umsetzung_III.Model.Actions;
 
 namespace Umsetzung_III
 {
@@ -134,7 +134,7 @@ namespace Umsetzung_III
                 }
             }
         }
-        public int GastTeamScore
+        public virtual int GastTeamScore
         {
             get { return _spielanzeige.GastTeamScore; }
             set
@@ -146,7 +146,7 @@ namespace Umsetzung_III
                 }
             }
         }
-        public int HeimTeamScore
+        public virtual int HeimTeamScore
         {
             get { return _spielanzeige.HeimTeamScore; }
             set
@@ -188,7 +188,7 @@ namespace Umsetzung_III
         public ICommand BuzzerPressed { get; }
 
         // Zuruecksetzen des gesamten ViewModels auf den Anfangszustand
-        public void ResetViewModel()
+        public virtual void ResetViewModel()
         {
             _spielanzeige.ResetModel();
             _spielzeitStore.Reset();
@@ -222,9 +222,6 @@ namespace Umsetzung_III
 
             _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged;
             _strafenGast.OnStrafenChanged += StrafenGast_StrafenChanged;
-            _strafenHeim.OnStrafenAnzeigeGroesseChanged += StrafenHeim_OnStrafenAnzeigeGroesseChanged;
-            _strafenGast.OnStrafenAnzeigeGroesseChanged += StrafenGast_OnStrafenAnzeigeGroesseChanged;
-
 
             _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged;
             _halfTimeStore.OnEffektiveSpielzeitVisibilityChanged += HalfTimeStore_EffektiveSpielzeitVisibilityChanged;
@@ -289,24 +286,15 @@ namespace Umsetzung_III
         private void StrafenHeim_StrafenChanged()
         {
             _logoStore.CheckIfLogoMustBeVisible();
+            OnPropertyChanged("HeimStrafenAnzeigeGroesse");
+            OnPropertyChanged("HeimStrafeMargin");
         }
 
         private void StrafenGast_StrafenChanged()
         {
             _logoStore.CheckIfLogoMustBeVisible();
-        }
-
-        private void StrafenGast_OnStrafenAnzeigeGroesseChanged()
-        {
             OnPropertyChanged("GastStrafenAnzeigeGroesse");
             OnPropertyChanged("GastStrafeMargin");
-
-        }
-
-        private void StrafenHeim_OnStrafenAnzeigeGroesseChanged()
-        {
-            OnPropertyChanged("HeimStrafenAnzeigeGroesse");
-            OnPropertyChanged("HeimStrafeMargin");
         }
 
         private void LogoStore_LogoVisibilityChanged()
