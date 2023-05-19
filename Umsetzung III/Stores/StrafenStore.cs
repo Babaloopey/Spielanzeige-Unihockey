@@ -4,7 +4,7 @@ using System.Linq;
 using Umsetzung_III.Interface;
 using Umsetzung_III.Model;
 using Umsetzung_III.Services;
-using static Umsetzung_III.Actions;
+using static Umsetzung_III.Model.Actions;
 
 namespace Umsetzung_III
 {
@@ -18,7 +18,6 @@ namespace Umsetzung_III
         public bool IsStrafeRunning => Strafen.Count > 0 ? true : false;
 
         public event Action OnStrafenChanged;
-        public event Action OnStrafenAnzeigeGroesseChanged;
 
         public virtual Schrift StrafenAnzeigeGroesse { get; set; } = 0;
 
@@ -27,7 +26,7 @@ namespace Umsetzung_III
             _spielzeitStore = spielzeitStore;
 
         }
-        public void Create(Strafe strafe)
+        public virtual void Create(Strafe strafe)
         {
             int _strafSekunde = _spielzeitStore.GetActualSpielSecond();
 
@@ -63,11 +62,11 @@ namespace Umsetzung_III
 
         public void AdjustStrafenAnzeigeGroesse()
         {
-            if(Strafen.Count == 1)
+            if (Strafen.Count == 1)
             {
                 StrafenAnzeigeGroesse = Schrift.gross;
             }
-            else if(Strafen.Count == 2)
+            else if (Strafen.Count == 2)
             {
                 StrafenAnzeigeGroesse = Schrift.mittel;
             }
@@ -77,7 +76,7 @@ namespace Umsetzung_III
             }
         }
 
-        public void Delete(object strafe)
+        public virtual void Delete(object strafe)
         {
             if (strafe != null)
             {
@@ -98,13 +97,7 @@ namespace Umsetzung_III
         private void StrafenChanged()
         {
             AdjustStrafenAnzeigeGroesse();
-            StrafenAnzeigeGroesseChanged();
-           OnStrafenChanged?.Invoke();
-        }
-
-        private void StrafenAnzeigeGroesseChanged()
-        {
-            OnStrafenAnzeigeGroesseChanged?.Invoke();
+            OnStrafenChanged?.Invoke();
         }
     }
 }

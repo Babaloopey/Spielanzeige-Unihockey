@@ -17,9 +17,9 @@ namespace Umsetzung_III.Stores
         public int Minute => timerState.GetMinute();
         public int Second => timerState.GetSecond();
 
-        private bool IsTimeRunning = false;
+        public bool IsTimeRunning = false;
 
-        public bool IsStartButtonVisible = true;
+        public virtual bool IsStartButtonVisible { get; set; } = true;
 
         public event Action OnStartButtonVisibilityChanged;
         public event Action OnSpielzeitChanged;
@@ -40,38 +40,38 @@ namespace Umsetzung_III.Stores
             timerState = spielzeitState;
         }
 
-        public void Start()
+        public virtual void Start()
         {
             IsTimeRunning = true;
             IsStartButtonVisible = false;
             StartButtonVisibilityChanged();
         }
-        public void Stop()
+        public virtual void Stop()
         {
             IsTimeRunning = false;
             IsStartButtonVisible = true;
             StartButtonVisibilityChanged();
         }
-        public void Reset()
+        public virtual void Reset()
         {
             timerState.Reset();
         }
-        public void MinuteMinusOne()
+        public virtual void MinuteMinusOne()
         {
             timerState.MinuteMinusOne();
             SpielzeitChanged();
         }
-        public void MinutePlusOne()
+        public virtual void MinutePlusOne()
         {
             timerState.MinutePlusOne();
             SpielzeitChanged();
         }
 
-        public void StartPause()
+        public virtual void StartPause()
         {
             timerState.StartPause();
         }
-        public void StartTimeOut()
+        public virtual void StartTimeOut()
         {
             timerState.StartTimeOut();
         }
