@@ -85,6 +85,31 @@ namespace SpielanzeigeTestNUnit.Commands
             // Assert
             spielzeitStoreMock.Verify(s => s.MinuteMinusOne(), Times.Once);
         }
+        [Test]
+        public void Execute_ShouldInvokePlusOne_WhenZeitAktionIsSecondPlusOne()
+        {
+            // Arrange
+            timeCommand = new TimeCommand(spielzeitStoreMock.Object, ZeitAktion.SecondPlusOne);
+
+            // Act
+            timeCommand.Execute(null);
+
+            // Assert
+            spielzeitStoreMock.Verify(s => s.SecondPlusOne(), Times.Once);
+        }
+
+        [Test]
+        public void Execute_ShouldInvokeMinusOne_WhenZeitAktionIsSecondMinusOne()
+        {
+            // Arrange
+            timeCommand = new TimeCommand(spielzeitStoreMock.Object, ZeitAktion.SecondMinusOne);
+
+            // Act
+            timeCommand.Execute(null);
+
+            // Assert
+            spielzeitStoreMock.Verify(s => s.SecondMinusOne(), Times.Once);
+        }
 
         [Test]
         public void Execute_ShouldInvokeStart_WhenZeitAktionIsSpace()

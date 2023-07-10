@@ -172,6 +172,9 @@ namespace Umsetzung_III
         public ICommand ResetAll { get; }
         public ICommand TimeMinusOne { get; }
         public ICommand TimePlusOne { get; }
+        public ICommand SecondMinusOne { get; }
+        public ICommand SecondPlusOne { get; }
+
         public ICommand StartPausenzeit { get; }
         public ICommand StartTimeOut { get; }
 
@@ -243,6 +246,8 @@ namespace Umsetzung_III
             SpaceButton = new TimeCommand(_spielzeitStore, ZeitAktion.Space);
             TimeMinusOne = new TimeCommand(_spielzeitStore, ZeitAktion.MinusOne);
             TimePlusOne = new TimeCommand(_spielzeitStore, ZeitAktion.PlusOne);
+            SecondPlusOne = new TimeCommand(_spielzeitStore, ZeitAktion.SecondPlusOne);
+            SecondMinusOne = new TimeCommand(_spielzeitStore, ZeitAktion.SecondMinusOne);
             StartPausenzeit = new TimeCommand(_spielzeitStore, ZeitAktion.StartPausenzeit);
             StartTimeOut = new TimeCommand(_spielzeitStore, ZeitAktion.StartTimeOut);
 

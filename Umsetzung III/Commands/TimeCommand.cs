@@ -35,6 +35,12 @@ namespace Umsetzung_III
                 case ZeitAktion.MinusOne:
                     _spielzeitStore.MinuteMinusOne();
                     break;
+                case ZeitAktion.SecondPlusOne:
+                    _spielzeitStore.SecondPlusOne();
+                    break;
+                case ZeitAktion.SecondMinusOne:
+                    _spielzeitStore.SecondMinusOne();
+                    break;
                 case ZeitAktion.Space:
                     if (_spielzeitStore.IsStartButtonVisible == true)
                     {

@@ -27,15 +27,13 @@ namespace Umsetzung_III.TimerStates
             {
                 _timerIterations = 0;
                 CountOneSecond();
-            }
-
-            
-
+            } 
         }
         private void CountOneSecond()
         {
-            if (minute == 0 && second == 0)
+            if (minute == 0 && second <= 1)
             {
+                SecondMinusOne();
                 TimeRanOut();
             }
             else if (second == 0)
@@ -45,7 +43,7 @@ namespace Umsetzung_III.TimerStates
             }
             else
             {
-                second--;
+                SecondMinusOne();
             }
         }
         public abstract void StartPause();
@@ -69,6 +67,31 @@ namespace Umsetzung_III.TimerStates
             if (minute > 0)
             {
                 minute--;
+            }
+        }
+
+        public void SecondPlusOne()
+        {
+            if (second < 59)
+            {
+                second++;
+            }
+            else
+            {
+                MinutePlusOne();
+                second = 0;
+            }
+        }
+
+        public void SecondMinusOne()
+        {
+            if (second > 0)
+            {
+                second--;
+            } else if (minute > 0)
+            {
+                MinuteMinusOne();
+                second = 59;
             }
         }
 

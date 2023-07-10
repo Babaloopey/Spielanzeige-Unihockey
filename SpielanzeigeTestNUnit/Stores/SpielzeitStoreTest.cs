@@ -70,13 +70,16 @@ namespace SpielanzeigeTestNUnit.Stores
         {
             // Arrange
             sut.MinuteMinusOne();
-            Assert.AreEqual(19, sut.GetActualSpielMinute());
+            sut.SecondMinusOne();
+            Assert.AreEqual(18, sut.GetActualSpielMinute());
+            Assert.AreEqual(59, sut.GetActualSpielSecond());
 
             // Act
             sut.Reset();
 
             // Assert
             Assert.AreEqual(20, sut.GetActualSpielMinute());
+            Assert.AreEqual(0, sut.GetActualSpielSecond());
         }
 
         [Test]
@@ -105,6 +108,34 @@ namespace SpielanzeigeTestNUnit.Stores
 
             // Assert
             Assert.AreEqual(21, sut.GetActualSpielMinute());
+            Assert.IsTrue(onSpielzeitChanged);
+        }
+        [Test]
+        public void SecondMinusOne_ShouldCallSecondMinusOneAndInvokeOnSpielzeitChanged()
+        {
+
+            bool onSpielzeitChanged = false;
+            sut.OnSpielzeitChanged += () => onSpielzeitChanged = true;
+
+            // Act
+            sut.SecondMinusOne();
+
+            // Assert
+            Assert.AreEqual(59, sut.GetActualSpielSecond());
+            Assert.IsTrue(onSpielzeitChanged);
+        }
+
+        [Test]
+        public void SecondPlusOne_ShouldCallSecondPlusOneAndInvokeOnSpielzeitChanged()
+        {
+            bool onSpielzeitChanged = false;
+            sut.OnSpielzeitChanged += () => onSpielzeitChanged = true;
+
+            // Act
+            sut.SecondPlusOne();
+
+            // Assert
+            Assert.AreEqual(01, sut.GetActualSpielSecond());
             Assert.IsTrue(onSpielzeitChanged);
         }
 

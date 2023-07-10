@@ -66,6 +66,16 @@ namespace Umsetzung_III.Stores
             timerState.MinutePlusOne();
             SpielzeitChanged();
         }
+        public virtual void SecondMinusOne()
+        {
+            timerState.SecondMinusOne();
+            SpielzeitChanged();
+        }
+        public virtual void SecondPlusOne()
+        {
+            timerState.SecondPlusOne();
+            SpielzeitChanged();
+        }
 
         public virtual void StartPause()
         {
