@@ -3,7 +3,7 @@ using Umsetzung_III.Stores;
 
 namespace Umsetzung_III.TimerStates
 {
-    internal class PausenState : State
+    public class PausenState : State
     {
         public PausenState(SpielzeitStore spielzeiStore) : base(spielzeiStore)
         {

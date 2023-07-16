@@ -3,7 +3,7 @@ using Umsetzung_III.Stores;
 
 namespace Umsetzung_III.TimerStates
 {
-    internal class SpielzeitState : State
+    public class SpielzeitState : State
     {
         protected SpielanzeigeViewModel spielanzeige;
 

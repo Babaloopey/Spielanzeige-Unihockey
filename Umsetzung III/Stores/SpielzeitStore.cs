@@ -95,17 +95,17 @@ namespace Umsetzung_III.Stores
             }
         }
 
-        public void SetSpielzeitState()
+        public virtual void SetSpielzeitState()
         {
             timerState = spielzeitState;
             TimeModeChanged();
         }
-        public void SetPausenState()
+        public virtual void SetPausenState()
         {
             timerState = pausenState;
             TimeModeChanged();
         }
-        public void SetTimeOutState()
+        public virtual void SetTimeOutState()
         {
             timerState = timeOutState;
             TimeModeChanged();

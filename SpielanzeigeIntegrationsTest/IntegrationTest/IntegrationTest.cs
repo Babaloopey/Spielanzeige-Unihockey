@@ -161,16 +161,20 @@ namespace IntegrationTest
         {
             sut.TimeMinusOne.Execute(null);
             sut.TimeMinusOne.Execute(null);
-            Assert.AreEqual(18, sut.SpielMinute);
-            Assert.AreEqual(0, sut.SpielSekunde);
-            Assert.AreEqual("18:00", sut.Spielzeit);
+            sut.SecondMinusOne.Execute(null);
+            Assert.AreEqual(17, sut.SpielMinute);
+            Assert.AreEqual(59, sut.SpielSekunde);
+            Assert.AreEqual("17:59", sut.Spielzeit);
 
             sut.TimePlusOne.Execute(null);
+            sut.SecondPlusOne.Execute(null);
+            sut.SecondPlusOne.Execute(null);
             Assert.AreEqual(19, sut.SpielMinute);
-            Assert.AreEqual(0, sut.SpielSekunde);
-            Assert.AreEqual("19:00", sut.Spielzeit);
+            Assert.AreEqual(1, sut.SpielSekunde);
+            Assert.AreEqual("19:01", sut.Spielzeit);
 
             TimeMinusTwenty();
+            SecondsMinusTwenty();
             Assert.AreEqual(0, sut.SpielMinute);
             Assert.AreEqual(0, sut.SpielSekunde);
             Assert.AreEqual("00:00", sut.Spielzeit);
@@ -241,6 +245,13 @@ namespace IntegrationTest
             for (int i = 0; i <= 20; i++)
             {
                 sut.TimeMinusOne.Execute(null);
+            }
+        }
+        public void SecondsMinusTwenty()
+        {
+            for (int i = 0; i <= 20; i++)
+            {
+                sut.SecondMinusOne.Execute(null);
             }
         }
     }
