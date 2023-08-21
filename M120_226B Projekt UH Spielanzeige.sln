@@ -9,7 +9,9 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "UH Spielanzeige", "UH Spiel
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpielanzeigeTestNUnit", "SpielanzeigeTestNUnit\SpielanzeigeTestNUnit.csproj", "{329E94B4-9CF1-42DB-B7BF-1DA24FB65FF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpielanzeigeIntegrationsTest", "SpielanzeigeIntegrationsTest\SpielanzeigeIntegrationsTest.csproj", "{0ECCB541-456B-4547-A3CF-327E1AB82C09}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpielanzeigeIntegrationsTest", "SpielanzeigeIntegrationsTest\SpielanzeigeIntegrationsTest.csproj", "{0ECCB541-456B-4547-A3CF-327E1AB82C09}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{D2CFB6CE-EB7D-47F6-8667-21F9764C22D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,8 @@ Global
 		{0ECCB541-456B-4547-A3CF-327E1AB82C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0ECCB541-456B-4547-A3CF-327E1AB82C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0ECCB541-456B-4547-A3CF-327E1AB82C09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2CFB6CE-EB7D-47F6-8667-21F9764C22D3}.Debug|Any CPU.ActiveCfg = Debug
+		{D2CFB6CE-EB7D-47F6-8667-21F9764C22D3}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
