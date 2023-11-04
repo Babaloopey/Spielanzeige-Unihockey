@@ -38,6 +38,15 @@ namespace Umsetzung_III
         public bool EffektiveSpielzeitVisibility => _halfTimeStore.IsEffektiveSpielzeitVisible; //public bool EffektiveSpielzeitVisibility => _spielzeitStore.EffektiveSpielzeitVisibility;
 
         // Properties, die von der View abgefragt werden, um Informationen darzustellen
+        public string LogoSource
+        {
+            get { return _logoStore.GetLogoSource(); }
+            set { 
+                _logoStore.SetLogoSource(value);
+                OnPropertyChanged("LogoSource");
+            }
+        }
+
         public string Spielzeit
         {
             get { return SpielMinute.ToString("00") + ":" + SpielSekunde.ToString("00"); }
@@ -189,6 +198,7 @@ namespace Umsetzung_III
         public ICommand GastStrafeDelete { get; }
 
         public ICommand BuzzerPressed { get; }
+        public ICommand LogoChange { get; }
 
         // Zuruecksetzen des gesamten ViewModels auf den Anfangszustand
         public virtual void ResetViewModel()
@@ -266,6 +276,7 @@ namespace Umsetzung_III
             // Button um das ViewModel zurueckzusetzen
             ResetAll = new ResetAllCommand(this);
             BuzzerPressed = new BuzzerCommand();
+            LogoChange = new LogoCommand(this);
         }
 
         // Funktionen, die an die Events der Stores gebunden sind: Im Konstruktor verlinkt

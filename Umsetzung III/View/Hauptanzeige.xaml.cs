@@ -23,6 +23,40 @@ namespace Umsetzung_III
         {
             InitializeComponent();
             DataContext = viewModel;
+
+            string textFilePath = "logoPath.txt"; // Path to the text file
+            string targetFolder = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logo");
+
+            if (System.IO.File.Exists(textFilePath))
+            {
+                // Read the selected image path from the text file
+                string selectedImagePath = System.IO.File.ReadAllText(textFilePath);
+
+                string[] existingFiles = System.IO.Directory.GetFiles(targetFolder);
+
+                // Delete each existing file
+                DeleteOtherFilesThanSelected(selectedImagePath, existingFiles);
+                DisplayImageIfExists(viewModel, selectedImagePath);
+            }
+        }
+
+        private static void DisplayImageIfExists(SpielanzeigeViewModel viewModel, string selectedImagePath)
+        {
+            if (System.IO.File.Exists(selectedImagePath))
+            {
+                viewModel.LogoSource = selectedImagePath;
+            }
+        }
+
+        private static void DeleteOtherFilesThanSelected(string selectedImagePath, string[] existingFiles)
+        {
+            foreach (string existingFile in existingFiles)
+            {
+                if (existingFile != selectedImagePath)
+                {
+                    System.IO.File.Delete(existingFile);
+                }
+            }
         }
 
         private void SetWindowToFullScreen(object sender, MouseButtonEventArgs e)
@@ -46,7 +80,7 @@ namespace Umsetzung_III
             {
                 SetWindowToTrueFullScreen();
             }
-            else if(this.WindowState == WindowState.Normal)
+            else if (this.WindowState == WindowState.Normal)
             {
                 SetWindowToNormalScreen();
             }

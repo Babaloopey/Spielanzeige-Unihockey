@@ -75,6 +75,10 @@ namespace Umsetzung_III
                 {
                     _viewModel.BuzzerPressed.Execute(e.Key);
                 }
+                if(e.Key == Key.L)
+                {
+                    _viewModel.LogoChange.Execute(e.Key);
+                }
             }
         }
     }

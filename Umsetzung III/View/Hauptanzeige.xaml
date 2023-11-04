@@ -11,7 +11,7 @@
         Width="1066"
         MouseDoubleClick="SetWindowToFullScreen"
         StateChanged="Window_StateChanged"
-        Icon="/View/STV_Logo.jpg"
+        Icon="/View/Logo.jpg"
         ResizeMode="CanResize">
 
     <Window.Resources>
@@ -134,7 +134,7 @@
 
                     <Image Grid.Column="2"
                            Grid.ColumnSpan="3"
-                           Source="/View/STV_Logo.jpg"
+                           Source="{Binding LogoSource}"
                            Margin="60,-40,0,40"
                            Visibility="{Binding Path=LogoVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
