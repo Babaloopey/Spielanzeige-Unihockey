@@ -3,7 +3,7 @@ using Umsetzung_III.Interface;
 
 namespace Umsetzung_III.Controller
 {
-    public class EffStrafzeitController
+    public class EffSpielzeitController
     {
         public bool IsEffektiveSpielzeitVisible = false;
         private readonly SpielanzeigeViewModel viewModel;
@@ -11,7 +11,7 @@ namespace Umsetzung_III.Controller
 
         public event Action OnEffektiveSpielzeitVisibilityChanged;
 
-        public EffStrafzeitController(SpielanzeigeViewModel spielanzeigeViewModel, TimeDeliverer spielzeitStore)
+        public EffSpielzeitController(SpielanzeigeViewModel spielanzeigeViewModel, TimeDeliverer spielzeitStore)
         {
             this.spielzeitStore = spielzeitStore;
             viewModel = spielanzeigeViewModel;

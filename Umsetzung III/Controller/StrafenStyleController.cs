@@ -4,31 +4,56 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Umsetzung_III.Model;
+using static Umsetzung_III.Model.Actions;
 
 namespace Umsetzung_III.Controller
 {
     public class StrafenStyleController
     {
-        const string MarginGross = "0,-60,-20,0";
-        const string MarginMiddle = "0,-60,-20,0";
-        const string MarginSmall = "0,-80,-20,0";
+
+        // left, top, right, bottom
+        const string MarginBigHeim = "0,0,0,0";
+        const string MarginMiddleHeim = "70,-60,0,0";
+        const string MarginSmallHeim = "110,-80,0,0";    
+        
+        const string MarginBigGast = "0,0,0,0";
+        const string MarginMiddleGast = "0,-60,70,0";
+        const string MarginSmallGast = "0,-80,110,0";
 
         public StrafenStyleController() { }
 
         public string GetStrafenMargin(StrafenStore strafenStore)
         {
-            if (strafenStore.StrafenAnzeigeGroesse == Schrift.gross)
+            if(strafenStore.team == Team.Heim)
             {
-                return MarginGross;
-            }
-            else if (strafenStore.StrafenAnzeigeGroesse == Schrift.mittel)
+                if (strafenStore.StrafenAnzeigeGroesse == Schrift.gross)
+                {
+                    return MarginBigHeim;
+                }
+                else if (strafenStore.StrafenAnzeigeGroesse == Schrift.mittel)
+                {
+                    return MarginMiddleHeim;
+                }
+                else
+                {
+                    return MarginSmallHeim;
+                }
+            } else
             {
-                return MarginMiddle;
+                if (strafenStore.StrafenAnzeigeGroesse == Schrift.gross)
+                {
+                    return MarginBigGast;
+                }
+                else if (strafenStore.StrafenAnzeigeGroesse == Schrift.mittel)
+                {
+                    return MarginMiddleGast;
+                }
+                else
+                {
+                    return MarginSmallGast;
+                }
             }
-            else
-            {
-                return MarginSmall;
-            }
+           
         }
 
     }

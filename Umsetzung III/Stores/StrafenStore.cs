@@ -20,11 +20,12 @@ namespace Umsetzung_III
         public event Action OnStrafenChanged;
 
         public virtual Schrift StrafenAnzeigeGroesse { get; set; } = 0;
+        public Team team;
 
-        public StrafenStore(TimeDeliverer spielzeitStore)
+        public StrafenStore(TimeDeliverer spielzeitStore, Team team)
         {
             _spielzeitStore = spielzeitStore;
-
+            this.team = team;
         }
         public virtual void Create(Strafe strafe)
         {
