@@ -9,9 +9,9 @@ namespace Umsetzung_III.Controller
 {
     public class StrafenStyleController
     {
-        const string MarginGross = "0,-40,0,0";
-        const string MarginMiddle = "0,-60,60,0";
-        const string MarginSmall = "0,-80,60,0";
+        const string MarginGross = "0,-60,-20,0";
+        const string MarginMiddle = "0,-60,-20,0";
+        const string MarginSmall = "0,-80,-20,0";
 
         public StrafenStyleController() { }
 

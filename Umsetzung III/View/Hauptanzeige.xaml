@@ -12,7 +12,11 @@
         MouseDoubleClick="SetWindowToFullScreen"
         StateChanged="Window_StateChanged"
         Icon="/View/Logo.jpg"
-        ResizeMode="CanResize">
+        ResizeMode="CanResize"
+        FontFamily="Urbanist"
+        FontStyle="Italic"
+        FontWeight="SemiBold"
+                >
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -37,7 +41,9 @@
     <Viewbox>
 
         <Grid Height="600"
-              Width="1090">
+              Width="1090"
+                      Margin="-7, 0, 0, 0"
+>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0*" />
                 <ColumnDefinition />
@@ -59,7 +65,7 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
-                               FontSize="60"
+                               FontSize="55"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                HorizontalAlignment="Center"
@@ -71,13 +77,14 @@
 
                     <TextBlock Grid.Column="1"
                                FontSize="150"
+                               FontWeight="ExtraBold"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                HorizontalAlignment="Center"
                                Text="{Binding Halbzeit}" />
 
                     <TextBlock Grid.Column="2"
-                               FontSize="60"
+                               FontSize="55"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                HorizontalAlignment="Center"
@@ -97,7 +104,8 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Grid.Column="0"
-                               FontSize="300"
+                               FontSize="280"
+                               FontWeight="ExtraBold"
                                Margin="30,0,0,0"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
@@ -105,14 +113,15 @@
                                Text="{Binding HeimTeamScore}" />
 
                     <TextBlock Grid.Column="1"
-                               FontSize="150"
+                               FontSize="130"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                HorizontalAlignment="Center"
                                Text="{Binding Spielzeit}" />
 
                     <TextBlock Grid.Column="2"
-                               FontSize="300"
+                               FontSize="280"
+                               FontWeight="ExtraBold"
                                Margin="0,0,30,0"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
@@ -135,13 +144,13 @@
                     <Image Grid.Column="2"
                            Grid.ColumnSpan="3"
                            Source="{Binding LogoSource}"
-                           Margin="60,-40,0,40"
+                           Margin="0,-40,0,40"
                            Visibility="{Binding Path=LogoVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 
 
                     <TextBlock Grid.Column="1"
-                               FontSize="70"
+                               FontSize="65"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                Margin="20,0,0,0"
@@ -151,8 +160,9 @@
                              Grid.Row="1"
                              FontSize="{Binding HeimStrafenAnzeigeGroesse}"
                              Margin="{Binding HeimStrafeMargin}"
+                             Foreground="Red"
+                             
                              VerticalAlignment="Center"
-                             Foreground="#2D2D2D"
                              HorizontalAlignment="Center"
                              Visibility="Visible"
                              BorderThickness="0"
@@ -169,7 +179,7 @@
                              FontSize="{Binding GastStrafenAnzeigeGroesse}"
                              Margin="{Binding GastStrafeMargin}"
                              VerticalAlignment="Center"
-                             Foreground="#2D2D2D"
+                             Foreground="Red"
                              HorizontalAlignment="Center"
                              Visibility="Visible"
                              BorderThickness="0"
@@ -180,7 +190,7 @@
                              DisplayMemberPath="displayStrafe" />
 
                     <TextBlock Grid.Column="5"
-                               FontSize="70"
+                               FontSize="65"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                Margin="0,0,20,0"

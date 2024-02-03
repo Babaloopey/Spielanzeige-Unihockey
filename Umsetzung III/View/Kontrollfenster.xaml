@@ -12,11 +12,14 @@
         MouseLeftButtonDown="Window_MouseDown"
         Closing="Window_Closing"
         Icon="/View/Logo.jpg"
+                FontFamily="Urbanist"
+        FontWeight="SemiBold"
         KeyDown="Window_KeyDown">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     </Window.Resources>
+    
 
 
     <Viewbox>
@@ -95,7 +98,27 @@
                                  Foreground="#2D2D2D"
                                  FontSize="30"
                                  Focusable="False"
-                                 Command="{Binding HeimScoreUp}" />
+                                 BorderBrush="Red"
+                            BorderThickness="2"
+                            Background="Transparent"
+                                 
+                                 Command="{Binding HeimScoreUp}" >
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="50"/>
+                                </Style>
+                                <Style TargetType="{x:Type Button}">
+                                    <Setter Property="Background" Value="Green"/>
+                                    
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="DarkGoldenrod"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                        
 
                         <Button x:Name="HeimDown"
                                 Grid.Row="1"
@@ -432,7 +455,7 @@
                         </Grid>
 
 
-                       
+
                     </Grid>
 
                     <Grid Grid.Row="2"
