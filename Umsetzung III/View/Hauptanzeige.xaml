@@ -15,8 +15,7 @@
         ResizeMode="CanResize"
         FontFamily="Urbanist"
         FontStyle="Italic"
-        FontWeight="SemiBold"
-                >
+        FontWeight="SemiBold">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -42,8 +41,7 @@
 
         <Grid Height="600"
               Width="1090"
-                      Margin="-7, 0, 0, 0"
->
+              Margin="-7, 0, 0, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0*" />
                 <ColumnDefinition />
@@ -147,8 +145,6 @@
                            Margin="0,-40,0,40"
                            Visibility="{Binding Path=LogoVisibility, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-
-
                     <TextBlock Grid.Column="1"
                                FontSize="65"
                                VerticalAlignment="Center"
@@ -161,7 +157,6 @@
                              FontSize="{Binding HeimStrafenAnzeigeGroesse}"
                              Margin="{Binding HeimStrafeMargin}"
                              Foreground="Red"
-                             
                              VerticalAlignment="Center"
                              HorizontalAlignment="Center"
                              Visibility="Visible"

@@ -12,7 +12,7 @@
         MouseLeftButtonDown="Window_MouseDown"
         Closing="Window_Closing"
         Icon="/View/Logo.jpg"
-                FontFamily="Urbanist"
+        FontFamily="Urbanist"
         FontWeight="SemiBold"
         KeyDown="Window_KeyDown">
 
@@ -54,10 +54,18 @@
                              HorizontalAlignment="Center"
                              TextWrapping="Wrap"
                              TextAlignment="Left"
-                             Text="{Binding HeimTeamName, UpdateSourceTrigger=PropertyChanged}" />
+                             Padding="10,5,10,5"
+                             Text="{Binding HeimTeamName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius"
+                                        Value="10" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
 
                     <TextBlock Grid.Column="1"
-                               FontSize="50"
+                               FontSize="100"
                                VerticalAlignment="Center"
                                Foreground="#2D2D2D"
                                HorizontalAlignment="Center"
@@ -70,7 +78,15 @@
                              HorizontalAlignment="Center"
                              TextWrapping="Wrap"
                              TextAlignment="Left"
-                             Text="{Binding GastTeamName, UpdateSourceTrigger=PropertyChanged}" />
+                             Padding="10,5,10,5"
+                             Text="{Binding GastTeamName, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius"
+                                        Value="10" />
+                            </Style>
+                        </TextBox.Resources>
+                    </TextBox>
                 </Grid>
 
                 <Grid Grid.Row="1">
@@ -96,29 +112,20 @@
                                  Margin="10,50,20,5"
                                  Content="+ (Q)"
                                  Foreground="#2D2D2D"
-                                 FontSize="30"
+                                 FontSize="50"
                                  Focusable="False"
                                  BorderBrush="Red"
-                            BorderThickness="2"
-                            Background="Transparent"
-                                 
-                                 Command="{Binding HeimScoreUp}" >
+                                 BorderThickness="2"
+                                 Background="Transparent"
+                                 Command="{Binding HeimScoreUp}">
                             <Button.Resources>
                                 <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="50"/>
-                                </Style>
-                                <Style TargetType="{x:Type Button}">
-                                    <Setter Property="Background" Value="Green"/>
-                                    
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="DarkGoldenrod"/>
-                                        </Trigger>
-                                    </Style.Triggers>
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
                                 </Style>
                             </Button.Resources>
                         </Button>
-                        
+
 
                         <Button x:Name="HeimDown"
                                 Grid.Row="1"
@@ -126,12 +133,22 @@
                                 Margin="10,5,20,50"
                                 Content="- (A)"
                                 Foreground="#2D2D2D"
-                                FontSize="30"
+                                FontSize="50"
                                 Focusable="False"
-                                Command="{Binding HeimScoreDown}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding HeimScoreDown}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <TextBlock Grid.Column="1"
-                                   FontSize="130"
+                                   FontSize="120"
                                    VerticalAlignment="Center"
                                    Foreground="#2D2D2D"
                                    Margin="20"
@@ -157,7 +174,7 @@
 
                         <TextBlock Grid.RowSpan="2"
                                    Name="TimeDisplay"
-                                   FontSize="150"
+                                   FontSize="140"
                                    VerticalAlignment="Center"
                                    Foreground="#2D2D2D"
                                    HorizontalAlignment="Center"
@@ -179,8 +196,18 @@
                                 Foreground="#2D2D2D"
                                 FontSize="35"
                                 Focusable="False"
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
                                 Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding StartTime}" />
+                                Command="{Binding StartTime}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <Button x:Name="Pause"
                                 Grid.Row="2"
@@ -190,8 +217,18 @@
                                 Foreground="#2D2D2D"
                                 FontSize="35"
                                 Focusable="False"
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
                                 Visibility="{Binding Path=ButtonVisibilityStop, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding StopTime}" />
+                                Command="{Binding StopTime}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <Button x:Name="Reset"
                                 Grid.Row="3"
@@ -201,8 +238,18 @@
                                 Foreground="#2D2D2D"
                                 FontSize="40"
                                 Focusable="False"
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
                                 Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding ResetTime}" />
+                                Command="{Binding ResetTime}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                     </Grid>
 
@@ -222,9 +269,19 @@
                                 Margin="20,50,10,5"
                                 Content="+ (W)"
                                 Foreground="#2D2D2D"
-                                FontSize="30"
+                                FontSize="50"
                                 Focusable="False"
-                                Command="{Binding GastScoreUp}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding GastScoreUp}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <Button x:Name="GastDown"
                                 Grid.Row="1"
@@ -232,12 +289,22 @@
                                 Margin="20,5,10,50"
                                 Content="- (S)"
                                 Foreground="#2D2D2D"
-                                FontSize="30"
+                                FontSize="50"
                                 Focusable="False"
-                                Command="{Binding GastScoreDown}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding GastScoreDown}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <TextBlock Grid.Column="0"
-                                   FontSize="130"
+                                   FontSize="120"
                                    VerticalAlignment="Center"
                                    Foreground="#2D2D2D"
                                    Margin="20"
@@ -287,7 +354,17 @@
                                 Foreground="#2D2D2D"
                                 FontSize="50"
                                 Focusable="False"
-                                Command="{Binding HeimStrafeZwei}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding HeimStrafeZwei}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                         <Button x:Name="VierMinHeim"
                                 Grid.Row="1"
                                 Grid.Column="1"
@@ -296,7 +373,17 @@
                                 Foreground="#2D2D2D"
                                 FontSize="50"
                                 Focusable="False"
-                                Command="{Binding HeimStrafeVier}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding HeimStrafeVier}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                         <Button x:Name="ZehnMinHeim"
                                 Grid.Row="1"
                                 Grid.Column="2"
@@ -305,7 +392,17 @@
                                 Foreground="#2D2D2D"
                                 FontSize="50"
                                 Focusable="False"
-                                Command="{Binding HeimStrafeZehn}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding HeimStrafeZehn}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <ListBox x:Name="HeimStrafenList"
                                  Grid.Row="0"
@@ -338,8 +435,20 @@
                                                 Focusable="False"
                                                 Content="X"
                                                 VerticalAlignment="Center"
+                                                BorderBrush="Red"
+                                                BorderThickness="2"
+                                                Padding="5,0,5,0"
+                                                FontSize="25"
+                                                Background="Transparent"
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}, Path=DataContext.HeimStrafeDelete}"
-                                                CommandParameter="{Binding}" />
+                                                CommandParameter="{Binding}">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius"
+                                                            Value="50" />
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -366,8 +475,18 @@
                                 Foreground="#2D2D2D"
                                 FontSize="28"
                                 Focusable="False"
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
                                 Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding ResetAll}" />
+                                Command="{Binding ResetAll}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <Button x:Name="StartPausenzeit"
                                 Grid.Row="0"
@@ -378,8 +497,18 @@
                                 Foreground="#2D2D2D"
                                 FontSize="28"
                                 Focusable="False"
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
                                 Visibility="{Binding Path=ButtonVisibilityPause, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding StartPausenzeit}" />
+                                Command="{Binding StartPausenzeit}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                         <Button x:Name="StartTimeOut"
                                 Grid.Row="0"
                                 Grid.Column="1"
@@ -389,69 +518,119 @@
                                 Foreground="#2D2D2D"
                                 FontSize="28"
                                 Focusable="False"
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
                                 Visibility="{Binding Path=ButtonVisibilityTimeOut, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding StartTimeOut}" />
+                                Command="{Binding StartTimeOut}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
 
                         <Grid Grid.Row="1"
-                          Grid.Column="0">
+                              Grid.Column="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <Button x:Name="ZeitMinusEins"
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="1"
-                                Margin="30,5,-5,5"
-                                Content="-1m"
-                                Foreground="#2D2D2D"
-                                FontSize="30"
-                                Focusable="False"
-                                Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding TimeMinusOne}" />
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="1"
+                                    Margin="30,5,-5,5"
+                                    Content="-1m"
+                                    Foreground="#2D2D2D"
+                                    FontSize="30"
+                                    Focusable="False"
+                                    BorderBrush="Red"
+                                    BorderThickness="2"
+                                    Background="Transparent"
+                                    Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Command="{Binding TimeMinusOne}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius"
+                                                Value="50" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                             <Button x:Name="ZeitPlusEins"
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="1"
-                                Margin="10,5,15,5"
-                                Content="+1m"
-                                Foreground="#2D2D2D"
-                                FontSize="30"
-                                Focusable="False"
-                                Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding TimePlusOne}" />
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="1"
+                                    Margin="10,5,15,5"
+                                    Content="+1m"
+                                    Foreground="#2D2D2D"
+                                    FontSize="30"
+                                    Focusable="False"
+                                    BorderBrush="Red"
+                                    BorderThickness="2"
+                                    Background="Transparent"
+                                    Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Command="{Binding TimePlusOne}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius"
+                                                Value="50" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                         </Grid>
 
                         <Grid Grid.Row="1"
-                          Grid.Column="1">
+                              Grid.Column="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
                             <Button x:Name="SekundeMinusEins"
-                                Grid.Row="1"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="1"
-                                Margin="15,5,10,5"
-                                Content="-1s"
-                                Foreground="#2D2D2D"
-                                FontSize="30"
-                                Focusable="False"
-                                Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding SecondMinusOne}" />
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="1"
+                                    Margin="15,5,10,5"
+                                    Content="-1s"
+                                    Foreground="#2D2D2D"
+                                    FontSize="30"
+                                    Focusable="False"
+                                    BorderBrush="Red"
+                                    BorderThickness="2"
+                                    Background="Transparent"
+                                    Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Command="{Binding SecondMinusOne}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius"
+                                                Value="50" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                             <Button x:Name="SekundePlusEins"
-                                Grid.Row="1"
-                                Grid.Column="1"
-                                Grid.ColumnSpan="1"
-                                Margin="-5,5,30,5"
-                                Content="+1s"
-                                Foreground="#2D2D2D"
-                                FontSize="30"
-                                Focusable="False"
-                                Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                Command="{Binding SecondPlusOne}"/>
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Grid.ColumnSpan="1"
+                                    Margin="-5,5,30,5"
+                                    Content="+1s"
+                                    Foreground="#2D2D2D"
+                                    FontSize="30"
+                                    Focusable="False"
+                                    BorderBrush="Red"
+                                    BorderThickness="2"
+                                    Background="Transparent"
+                                    Visibility="{Binding Path=ButtonVisibilityStart, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                    Command="{Binding SecondPlusOne}">
+                                <Button.Resources>
+                                    <Style TargetType="Border">
+                                        <Setter Property="CornerRadius"
+                                                Value="50" />
+                                    </Style>
+                                </Button.Resources>
+                            </Button>
                         </Grid>
 
 
@@ -500,8 +679,20 @@
                                                 Focusable="False"
                                                 Content="X"
                                                 VerticalAlignment="Center"
+                                                BorderBrush="Red"
+                                                BorderThickness="2"
+                                                FontSize="25"
+                                                Padding="5,0,5,0"
+                                                Background="Transparent"
                                                 Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBox}}, Path=DataContext.GastStrafeDelete}"
-                                                CommandParameter="{Binding}" />
+                                                CommandParameter="{Binding}">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius"
+                                                            Value="50" />
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -516,7 +707,17 @@
                                 Foreground="#2D2D2D"
                                 FontSize="50"
                                 Focusable="False"
-                                Command="{Binding GastStrafeZwei}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding GastStrafeZwei}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="30" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                         <Button x:Name="VierMinGast"
                                 Grid.Row="1"
                                 Grid.Column="1"
@@ -525,7 +726,17 @@
                                 Foreground="#2D2D2D"
                                 FontSize="50"
                                 Focusable="False"
-                                Command="{Binding GastStrafeVier}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding GastStrafeVier}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                         <Button x:Name="ZehnMinGast"
                                 Grid.Row="1"
                                 Grid.Column="2"
@@ -534,7 +745,17 @@
                                 Foreground="#2D2D2D"
                                 FontSize="50"
                                 Focusable="False"
-                                Command="{Binding GastStrafeZehn}" />
+                                BorderBrush="Red"
+                                BorderThickness="2"
+                                Background="Transparent"
+                                Command="{Binding GastStrafeZehn}">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius"
+                                            Value="50" />
+                                </Style>
+                            </Button.Resources>
+                        </Button>
                     </Grid>
 
                 </Grid>
