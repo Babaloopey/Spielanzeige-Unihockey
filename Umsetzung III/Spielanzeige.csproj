@@ -10,12 +10,12 @@
 
   <ItemGroup>
     <None Remove="View\Logo.jpg" />
-    <None Remove="View\STV_Logo.jpg" />
+    <None Remove="View\STV_Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="View\Logo.jpg" />
-    <Resource Include="View\STV_Logo.jpg" />
+    <Resource Include="View\STV_Logo.png" />
   </ItemGroup>
 
 </Project>

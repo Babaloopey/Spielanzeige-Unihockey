@@ -9,7 +9,7 @@ namespace Umsetzung_III.Controller
         public bool IsLogoVisible = true;
 
         public event Action OnLogoVisibilityChanged;
-        public string logoSource = "/View/STV_Logo.jpg";
+        public string logoSource = "/View/STV_Logo.png";
 
         public LogoController(SpielanzeigeViewModel spielanzeigeViewModel)
         {
