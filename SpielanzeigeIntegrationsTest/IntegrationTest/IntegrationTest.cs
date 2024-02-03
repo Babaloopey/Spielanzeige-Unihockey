@@ -125,7 +125,7 @@ namespace IntegrationTest
             Assert.AreEqual(4, sut.HeimTeamStrafe.Count);
             Assert.IsTrue(sut.HeimTeamStrafeRunning);
             Assert.AreEqual(55, sut.HeimStrafenAnzeigeGroesse);
-            Assert.AreEqual("0,-80,60,0", sut.HeimStrafeMargin);
+            Assert.AreEqual("110,-80,0,0", sut.HeimStrafeMargin);
             Assert.AreEqual(0, sut.GastTeamStrafe.Count);
             Assert.IsFalse(sut.GastTeamStrafeRunning);
             Assert.IsFalse(sut.LogoVisibility);
@@ -150,7 +150,7 @@ namespace IntegrationTest
             Assert.AreEqual(4, sut.GastTeamStrafe.Count);
             Assert.IsTrue(sut.GastTeamStrafeRunning);
             Assert.AreEqual(55, sut.GastStrafenAnzeigeGroesse);
-            Assert.AreEqual("0,-80,60,0", sut.GastStrafeMargin);
+            Assert.AreEqual("0,-80,110,0", sut.GastStrafeMargin);
             Assert.AreEqual(0, sut.HeimTeamStrafe.Count);
             Assert.IsFalse(sut.HeimTeamStrafeRunning);
             Assert.IsFalse(sut.LogoVisibility);

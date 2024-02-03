@@ -21,7 +21,7 @@ namespace SpielanzeigeTestNUnit.Stores
         public void SetUp()
         {
             spielzeitStoreMock = new Mock<TimeDeliverer>();
-            sut = new StrafenStore(spielzeitStoreMock.Object);
+            sut = new StrafenStore(spielzeitStoreMock.Object, Team.Gast);
         }
 
         [Test]

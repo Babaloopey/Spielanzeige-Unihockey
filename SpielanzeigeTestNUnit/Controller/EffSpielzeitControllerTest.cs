@@ -7,7 +7,7 @@ using Umsetzung_III.Stores;
 namespace SpielanzeigeTestNUnit.Controller
 {
     [TestFixture]
-    public class EffStrafzeitControllerTest
+    public class EffSpielzeitControllerTest
     {
 
         [Test]
@@ -19,7 +19,7 @@ namespace SpielanzeigeTestNUnit.Controller
             var timeDeliverer = new Mock<SpielzeitStore>(viewModelMock.Object);
             timeDeliverer.SetupSequence(td => td.GetActualSpielMinute()).Returns(20);
 
-            var sut = new EffStrafzeitController(viewModelMock.Object, timeDeliverer.Object);
+            var sut = new EffSpielzeitController(viewModelMock.Object, timeDeliverer.Object);
 
             bool effStrafzeitVisibilityChanged = false;
             sut.OnEffektiveSpielzeitVisibilityChanged += () => effStrafzeitVisibilityChanged = true;
@@ -42,7 +42,7 @@ namespace SpielanzeigeTestNUnit.Controller
             var timeDeliverer = new Mock<SpielzeitStore>(viewModelMock.Object);
             timeDeliverer.SetupSequence(td => td.GetActualSpielMinute()).Returns(2);
 
-            var sut = new EffStrafzeitController(viewModelMock.Object, timeDeliverer.Object);
+            var sut = new EffSpielzeitController(viewModelMock.Object, timeDeliverer.Object);
 
             bool effStrafzeitVisibilityChanged = false;
             sut.OnEffektiveSpielzeitVisibilityChanged += () => effStrafzeitVisibilityChanged = true;
@@ -65,7 +65,7 @@ namespace SpielanzeigeTestNUnit.Controller
             var timeDeliverer = new Mock<SpielzeitStore>(viewModelMock.Object);
             timeDeliverer.SetupSequence(td => td.GetActualSpielMinute()).Returns(3);
 
-            var sut = new EffStrafzeitController(viewModelMock.Object, timeDeliverer.Object);
+            var sut = new EffSpielzeitController(viewModelMock.Object, timeDeliverer.Object);
 
             bool effStrafzeitVisibilityChanged = false;
             sut.OnEffektiveSpielzeitVisibilityChanged += () => effStrafzeitVisibilityChanged = true;
@@ -88,7 +88,7 @@ namespace SpielanzeigeTestNUnit.Controller
             var timeDeliverer = new Mock<SpielzeitStore>(viewModelMock.Object);
             timeDeliverer.SetupSequence(td => td.GetActualSpielMinute()).Returns(2);
 
-            var sut = new EffStrafzeitController(viewModelMock.Object, timeDeliverer.Object);
+            var sut = new EffSpielzeitController(viewModelMock.Object, timeDeliverer.Object);
 
             bool effStrafzeitVisibilityChanged = false;
             sut.OnEffektiveSpielzeitVisibilityChanged += () => effStrafzeitVisibilityChanged = true;
@@ -110,7 +110,7 @@ namespace SpielanzeigeTestNUnit.Controller
             var timeDeliverer = new Mock<SpielzeitStore>(viewModelMock.Object);
             timeDeliverer.SetupSequence(td => td.GetActualSpielMinute()).Returns(2);
 
-            var sut = new EffStrafzeitController(viewModelMock.Object, timeDeliverer.Object);
+            var sut = new EffSpielzeitController(viewModelMock.Object, timeDeliverer.Object);
 
             bool effStrafzeitVisibilityChanged = false;
             sut.OnEffektiveSpielzeitVisibilityChanged += () => effStrafzeitVisibilityChanged = true;
