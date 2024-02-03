@@ -71,11 +71,11 @@ namespace Umsetzung_III
                 {
                     _viewModel.SpaceButton.Execute(e.Key);
                 }
-                if (e.Key == Key.Enter)
+                if (e.Key == Key.Enter && Keyboard.Modifiers == ModifierKeys.Control)
                 {
                     _viewModel.BuzzerPressed.Execute(e.Key);
                 }
-                if(e.Key == Key.L)
+                if (e.Key == Key.L && Keyboard.Modifiers == ModifierKeys.Control)
                 {
                     _viewModel.LogoChange.Execute(e.Key);
                 }
