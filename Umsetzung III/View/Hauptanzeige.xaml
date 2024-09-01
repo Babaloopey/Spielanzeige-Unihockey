@@ -32,9 +32,6 @@
                     Key="S" />
         <KeyBinding Command="{Binding Path=SpaceButton}"
                     Key="Space" />
-        <KeyBinding Command="{Binding Path=BuzzerPressed}"
-                    Key="Enter" />
-
     </Window.InputBindings>
 
     <Viewbox>

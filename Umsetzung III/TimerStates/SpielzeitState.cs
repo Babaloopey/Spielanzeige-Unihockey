@@ -39,5 +39,18 @@ namespace Umsetzung_III.TimerStates
 
         protected override void CustomReset()
         {}
+
+        public override int GetAbsoluteMinute()
+        {
+            int vergangeneHalbzeiten = (spielanzeige.Halbzeit - 1) * durationMinute;
+            int laufendeZeit = durationMinute - minute - (second > 0 ? 1 : 0);
+
+            return vergangeneHalbzeiten + laufendeZeit;
+        }
+
+        public override int GetAbsoluteSecond()
+        {
+            return second == 0 ? 0 : 60 - second;
+        }
     }
 }

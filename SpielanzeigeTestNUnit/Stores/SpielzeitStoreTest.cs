@@ -217,6 +217,7 @@ namespace SpielanzeigeTestNUnit.Stores
             Assert.IsTrue(onSpielzeitChanged);
         }
 
+        [Test]
         public void GetDurationOfHalftime()
         {
             // Act
@@ -224,6 +225,115 @@ namespace SpielanzeigeTestNUnit.Stores
 
             // Assert
             Assert.AreEqual(20, actual);
+        }
+
+        [Test]
+        public void GetAbsoluteSpielZeit_AtTheStart()
+        {
+            // Act
+            var actualMinute = sut.GetAbsoluteSpielMinute();
+            var actualSecond = sut.GetAbsoluteSpielSecond();
+
+            // Assert
+            Assert.AreEqual(0, actualMinute);
+            Assert.AreEqual(0, actualSecond);
+        }
+
+        [Test]
+        public void GetAbsoluteSpielZeit_SecondHalbzeit()
+        {
+            // Arrange
+            this.viewModel.Halbzeit = 2;
+
+            // Act
+            var actualMinute = sut.GetAbsoluteSpielMinute();
+            var actualSecond = sut.GetAbsoluteSpielSecond();
+
+            // Assert
+            Assert.AreEqual(20, actualMinute);
+            Assert.AreEqual(0, actualSecond);
+        }
+
+        [Test]
+        public void GetAbsoluteSpielZeit_SecondHalbzeitAndTwoMinutesDown()
+        {
+            // Arrange
+            this.viewModel.Halbzeit = 2;
+            ElapseTimeByMinutes(2);
+
+            // Act
+            var actualMinute = sut.GetAbsoluteSpielMinute();
+            var actualSecond = sut.GetAbsoluteSpielSecond();
+
+            // Assert
+            Assert.AreEqual(22, actualMinute);
+            Assert.AreEqual(0, actualSecond);
+        }
+
+
+        [Test]
+        public void GetAbsoluteSpielZeit_TwoMinutesAndTwoSecondsDown()
+        {
+            // Arrange
+            ElapseTimeByMinutes(2);
+            ElapseTimeBySeconds(2);
+
+            // Act
+            var actualMinute = sut.GetAbsoluteSpielMinute();
+            var actualSecond = sut.GetAbsoluteSpielSecond();
+
+            // Assert
+            Assert.AreEqual(2, actualMinute);
+            Assert.AreEqual(2, actualSecond);
+        }
+
+
+        [Test]
+        public void GetAbsoluteSpielZeit_TwoMinutesAndFityNineSecondsDown()
+        {
+            // Arrange
+            ElapseTimeByMinutes(2);
+            ElapseTimeBySeconds(59);
+
+            // Act
+            var actualMinute = sut.GetAbsoluteSpielMinute();
+            var actualSecond = sut.GetAbsoluteSpielSecond();
+
+            // Assert
+            Assert.AreEqual(2, actualMinute);
+            Assert.AreEqual(59, actualSecond);
+        }
+
+        [Test]
+        public void GetAbsoluteSpielZeit_TwoMinutesAndSixtySecondsDown()
+        {
+            // Arrange
+            ElapseTimeByMinutes(2);
+            ElapseTimeBySeconds(60);
+
+            // Act
+            var actualMinute = sut.GetAbsoluteSpielMinute();
+            var actualSecond = sut.GetAbsoluteSpielSecond();
+
+            // Assert
+            Assert.AreEqual(3, actualMinute);
+            Assert.AreEqual(00, actualSecond);
+        }
+
+        public void ElapseTimeByMinutes(int minutes)
+        {
+            for(int i = 0; i < minutes; i++)
+            {
+                sut.MinuteMinusOne();
+            }
+        }
+
+        public void ElapseTimeBySeconds(int seconds)
+        {
+            for (int i = 0; i < seconds; i++)
+            {
+                sut.SecondMinusOne();
+            }
         }
     }
 }

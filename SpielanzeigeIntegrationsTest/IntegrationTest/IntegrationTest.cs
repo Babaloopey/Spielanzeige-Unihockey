@@ -32,6 +32,7 @@ namespace IntegrationTest
             Assert.AreEqual(20, sut.SpielMinute);
             Assert.AreEqual(0, sut.SpielSekunde);
             Assert.AreEqual("20:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
 
             Assert.AreEqual(0, sut.HeimTeamStrafe.Count);
             Assert.AreEqual(0, sut.GastTeamStrafe.Count);
@@ -44,7 +45,7 @@ namespace IntegrationTest
             Assert.AreEqual("Heim", sut.HeimTeamName);
             Assert.AreEqual("Gast", sut.GastTeamName);
 
-            Assert.AreEqual(0, sut.HeimTeamScore); // --
+            Assert.AreEqual(0, sut.HeimTeamScore);
             Assert.AreEqual(0, sut.GastTeamScore);
         }
 
@@ -165,6 +166,7 @@ namespace IntegrationTest
             Assert.AreEqual(17, sut.SpielMinute);
             Assert.AreEqual(59, sut.SpielSekunde);
             Assert.AreEqual("17:59", sut.Spielzeit);
+            Assert.AreEqual("02:01", sut.AbsoluteSpielzeit);
 
             sut.TimePlusOne.Execute(null);
             sut.SecondPlusOne.Execute(null);
@@ -172,12 +174,14 @@ namespace IntegrationTest
             Assert.AreEqual(19, sut.SpielMinute);
             Assert.AreEqual(1, sut.SpielSekunde);
             Assert.AreEqual("19:01", sut.Spielzeit);
+            Assert.AreEqual("00:59", sut.AbsoluteSpielzeit);
 
             TimeMinusTwenty();
             SecondsMinusTwenty();
             Assert.AreEqual(0, sut.SpielMinute);
             Assert.AreEqual(0, sut.SpielSekunde);
             Assert.AreEqual("00:00", sut.Spielzeit);
+            Assert.AreEqual("20:00", sut.AbsoluteSpielzeit);
         }
 
         [Test]
@@ -187,11 +191,13 @@ namespace IntegrationTest
             Assert.AreEqual(5, sut.SpielMinute);
             Assert.AreEqual(0, sut.SpielSekunde);
             Assert.AreEqual("05:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
 
             sut.ResetTime.Execute(null);
             Assert.AreEqual(20, sut.SpielMinute);
             Assert.AreEqual(0, sut.SpielSekunde);
             Assert.AreEqual("20:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
         }
 
         [Test]
@@ -201,11 +207,13 @@ namespace IntegrationTest
             Assert.AreEqual(0, sut.SpielMinute);
             Assert.AreEqual(30, sut.SpielSekunde);
             Assert.AreEqual("00:30", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
 
             sut.ResetTime.Execute(null);
             Assert.AreEqual(20, sut.SpielMinute);
             Assert.AreEqual(0, sut.SpielSekunde);
             Assert.AreEqual("20:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
         }
 
 

@@ -133,6 +133,15 @@ namespace Umsetzung_III.Stores
             return spielzeitState.GetSecond();
         }
 
+        public virtual int GetAbsoluteSpielMinute()
+        {
+            return spielzeitState.GetAbsoluteMinute();
+        }
+        public int GetAbsoluteSpielSecond()
+        {
+            return spielzeitState.GetAbsoluteSecond();
+        }
+
         public virtual int GetDurationOfHalfTime()
         {
             return spielzeitState.GetDuration();

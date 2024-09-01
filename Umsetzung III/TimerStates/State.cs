@@ -104,6 +104,8 @@ namespace Umsetzung_III.TimerStates
         {
             return second;
         }
+        public abstract int GetAbsoluteMinute();
+        public abstract int GetAbsoluteSecond();
         public int GetDuration()
         {
             return durationMinute;

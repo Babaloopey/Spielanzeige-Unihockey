@@ -11,6 +11,7 @@ using static Umsetzung_III.Model.Actions;
 
 namespace SpielanzeigeTestNUnit.Stores
 {
+    // TODO: Fix initialization of sut
     [TestFixture]
     public class StrafenStoreTests
     {

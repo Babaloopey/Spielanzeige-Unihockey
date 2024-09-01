@@ -32,5 +32,15 @@ namespace Umsetzung_III.TimerStates
         {
             spielzeitStore.SetSpielzeitState();
         }
+
+        public override int GetAbsoluteMinute()
+        {
+            return 0;
+        }
+
+        public override int GetAbsoluteSecond()
+        {
+            return 0;
+        }
     }
 }

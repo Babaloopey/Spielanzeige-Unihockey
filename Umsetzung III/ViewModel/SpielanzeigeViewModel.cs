@@ -47,6 +47,11 @@ namespace Umsetzung_III
             }
         }
 
+        public string AbsoluteSpielzeit
+        {
+            get { return _spielzeitStore.GetAbsoluteSpielMinute().ToString("00") + ":" + _spielzeitStore.GetAbsoluteSpielSecond().ToString("00"); ; }
+        }
+
         public string Spielzeit
         {
             get { return SpielMinute.ToString("00") + ":" + SpielSekunde.ToString("00"); }
@@ -295,6 +300,7 @@ namespace Umsetzung_III
         {
             _effSpielzeitController.CheckIfEffektiveSpielzeitMustBeVisible();
             OnPropertyChanged("Spielzeit");
+            OnPropertyChanged("AbsoluteSpielzeit");
         }
 
         private void StrafenHeim_StrafenChanged()
