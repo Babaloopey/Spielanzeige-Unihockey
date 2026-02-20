@@ -320,6 +320,43 @@ namespace SpielanzeigeTestNUnit.Stores
             Assert.AreEqual(00, actualSecond);
         }
 
+        [Test]
+        public void GetRemainingTimeInSeconds_TwentyMinutes()
+        {
+            // Act
+            var result = sut.GetRemainingTimeInSeconds();
+
+            // Assert
+            Assert.AreEqual(1200, result);
+        }
+
+        [Test]
+        public void GetRemainingTimeInSeconds_TwoMinutesAndThirtyFiveSecondsDown()
+        {
+            // Arrange
+            ElapseTimeByMinutes(2);
+            ElapseTimeBySeconds(35);
+
+            // Act
+            var result = sut.GetRemainingTimeInSeconds();
+
+            // Assert
+            Assert.AreEqual(1045, result);
+        }
+
+        [Test]
+        public void GetRemainingTimeInSeconds_TwentyMinutesDown()
+        {
+            // Arrange
+            ElapseTimeByMinutes(20);
+
+            // Act
+            var result = sut.GetRemainingTimeInSeconds();
+
+            // Assert
+            Assert.AreEqual(0, result);
+        }
+
         public void ElapseTimeByMinutes(int minutes)
         {
             for(int i = 0; i < minutes; i++)

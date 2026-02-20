@@ -22,6 +22,7 @@ namespace Umsetzung_III.Stores
         public virtual bool IsStartButtonVisible { get; set; } = true;
 
         public event Action OnStartButtonVisibilityChanged;
+        public event Action OnSpielzeitRanOut;
         public event Action OnSpielzeitChanged;
         public event Action OnTimeModeChanged;
 
@@ -30,7 +31,7 @@ namespace Umsetzung_III.Stores
 
             buzzer.Buzz();
 
-            _timerStore = new TimerService();
+            _timerStore = TimerService.GetTimerService();
             _timerStore.AddSubscriber(this);
 
             spielzeitState = new SpielzeitState(this, viewModel);
@@ -38,6 +39,16 @@ namespace Umsetzung_III.Stores
             pausenState = new PausenState(this);
 
             timerState = spielzeitState;
+
+            InitializeResetAction();
+        }
+
+        public void InitializeResetAction()
+        {
+            if (spielzeitState is SpielzeitState concreteSpielzeitState)
+            {
+                concreteSpielzeitState.OnSpielzeitRanOut += SpielzeitReset;
+            }
         }
 
         public virtual void Start()
@@ -54,6 +65,11 @@ namespace Umsetzung_III.Stores
         }
         public virtual void Reset()
         {
+            if (timerState is SpielzeitState concreteSpielzeitState)
+            {
+                SpielzeitReset();
+            }
+
             timerState.Reset();
         }
         public virtual void MinuteMinusOne()
@@ -110,6 +126,17 @@ namespace Umsetzung_III.Stores
             timerState = timeOutState;
             TimeModeChanged();
         }
+        public void SetHalftimeDurationMinute(int halftimeDurationMinute)
+        {
+            if (spielzeitState is SpielzeitState concreteSpielzeitState)
+            {
+                concreteSpielzeitState.SetDurationMinute(halftimeDurationMinute);
+            }
+        }
+        private void SpielzeitReset()
+        {
+            OnSpielzeitRanOut?.Invoke();
+        }
         private void StartButtonVisibilityChanged()
         {
             OnStartButtonVisibilityChanged?.Invoke();
@@ -142,6 +169,11 @@ namespace Umsetzung_III.Stores
             return spielzeitState.GetAbsoluteSecond();
         }
 
+        public virtual int GetRemainingTimeInSeconds()
+        {
+            return spielzeitState.GetMinute() * 60 + spielzeitState.GetSecond();
+        }
+
         public virtual int GetDurationOfHalfTime()
         {
             return spielzeitState.GetDuration();
@@ -154,6 +186,11 @@ namespace Umsetzung_III.Stores
             }
             else { return "Zur Spielzeit"; }
 
+        }
+
+        public bool GetIsTimeRunning()
+        {
+            return IsTimeRunning;
         }
     }
 }

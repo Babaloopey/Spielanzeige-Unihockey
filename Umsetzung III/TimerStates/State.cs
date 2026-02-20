@@ -1,4 +1,5 @@
-﻿using Umsetzung_III.Services;
+﻿using System;
+using Umsetzung_III.Services;
 using Umsetzung_III.Stores;
 
 namespace Umsetzung_III.TimerStates
@@ -94,7 +95,6 @@ namespace Umsetzung_III.TimerStates
                 second = 59;
             }
         }
-
 
         public int GetMinute()
         {

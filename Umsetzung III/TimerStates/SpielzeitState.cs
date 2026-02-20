@@ -6,6 +6,7 @@ namespace Umsetzung_III.TimerStates
     public class SpielzeitState : State
     {
         protected SpielanzeigeViewModel spielanzeige;
+        public Action OnSpielzeitRanOut;
 
         public SpielzeitState(SpielzeitStore spielzeiStore, SpielanzeigeViewModel spielanzeigeViewModel) : base(spielzeiStore)
         {
@@ -34,6 +35,8 @@ namespace Umsetzung_III.TimerStates
 
             buzzer.Buzz();
             spielanzeige.Halbzeit++;
+
+            OnSpielzeitRanOut?.Invoke();
             Reset();
         }
 
@@ -51,6 +54,12 @@ namespace Umsetzung_III.TimerStates
         public override int GetAbsoluteSecond()
         {
             return second == 0 ? 0 : 60 - second;
+        }
+
+        public void SetDurationMinute(int durationMinute)
+        {
+            this.durationMinute = durationMinute;
+            this.minute = this.durationMinute;
         }
     }
 }

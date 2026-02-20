@@ -24,7 +24,7 @@ namespace SpielanzeigeTestNUnit.Commands
         public void SetUp()
         {
             var timeDelivererMock = new Mock<TimeDeliverer>();
-            strafenStoreMock = new Mock<StrafenStore>(timeDelivererMock.Object);
+            strafenStoreMock = new Mock<StrafenStore>(timeDelivererMock.Object, Team.Heim);
         }
 
         [Test]

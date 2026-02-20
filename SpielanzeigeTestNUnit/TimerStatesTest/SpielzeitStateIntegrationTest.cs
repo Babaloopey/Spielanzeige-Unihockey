@@ -45,5 +45,19 @@ namespace SpielanzeigeTestNUnit.TimerStates
             spielzeitStore.Verify(mock => mock.Stop(), Times.Once);
             Assert.AreEqual(2, spielanzeigeViewModel.Halbzeit);
         }
+
+        [Test]
+        public void TimeRanOutInvokesAction()
+        {
+            // Arrange
+            bool isReset = false;
+            ((SpielzeitState)sut).OnSpielzeitRanOut += () => isReset = true;
+
+            // Act
+            sut.TimeRanOut();
+
+            // Arrange
+            Assert.IsTrue(isReset);
+        }
     }
 }

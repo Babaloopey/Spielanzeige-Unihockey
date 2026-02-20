@@ -8,6 +8,15 @@ namespace Umsetzung_III.Model
         public int HeimTeamScore { get; set; }
         public int GastTeamScore { get; set; }
         public int Halbzeit { get; set; }
+        public bool IsEJuniorenModus { get; set; }
+
+        public int DurationHalftime
+        {
+            get
+            {
+                return IsEJuniorenModus ? 24 : 20;
+            }
+        }
 
         public SpielanzeigeModel()
         {
@@ -16,6 +25,7 @@ namespace Umsetzung_III.Model
             this.HeimTeamScore = 0;
             this.GastTeamScore = 0;
             this.Halbzeit = 1;
+            this.IsEJuniorenModus = false;
 
         }
         public void ResetModel()

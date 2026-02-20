@@ -6,10 +6,23 @@ namespace Umsetzung_III.Services
 {
     public class TimerService
     {
+        private static TimerService timerService;
+
         private readonly Timer _timer;
 
         private List<TimeSubscriber> timeSubscribers = new List<TimeSubscriber>();
-        public TimerService()
+
+        public static TimerService GetTimerService()
+        {
+            if (timerService == null)
+            {
+                timerService = new TimerService();
+            }
+
+            return timerService;
+        }
+
+        private TimerService()
         {
             _timer = new Timer(100);
             _timer.Elapsed += Timer_Elapsed;

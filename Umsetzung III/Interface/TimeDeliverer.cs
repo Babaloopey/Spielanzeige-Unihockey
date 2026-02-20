@@ -6,5 +6,7 @@ namespace Umsetzung_III.Interface
         int GetActualSpielMinute();
         int GetActualSpielSecond();
         int GetDurationOfHalfTime();
+        int GetRemainingTimeInSeconds();
+        bool GetIsTimeRunning();
     }
 }

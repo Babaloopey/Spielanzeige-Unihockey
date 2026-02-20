@@ -10,7 +10,7 @@ namespace Umsetzung_III
         private readonly SpielzeitStore _spielzeitStore;
         private readonly ZeitAktion _zeitAktion;
 
-        public TimeCommand(SpielzeitStore spielzeitStore ,ZeitAktion zeitAktion)
+        public TimeCommand(SpielzeitStore spielzeitStore, ZeitAktion zeitAktion)
         {
             _spielzeitStore = spielzeitStore;
             _zeitAktion = zeitAktion;

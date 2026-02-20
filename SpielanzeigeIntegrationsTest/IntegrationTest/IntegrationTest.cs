@@ -243,6 +243,103 @@ namespace IntegrationTest
         }
 
         [Test]
+        public void SwitchEJuniorenModusOnAndOff()
+        {
+            Assert.IsTrue(sut.IsEJuniorenModusSwitchable);
+            Assert.IsFalse(sut.IsEJuniorenModus);
+            Assert.AreEqual(20, sut.SpielMinute);
+            Assert.AreEqual(0, sut.SpielSekunde);
+
+            sut.IsEJuniorenModus = true;
+            Assert.IsTrue(sut.IsEJuniorenModus);
+            Assert.AreEqual(24, sut.SpielMinute);
+            Assert.AreEqual(0, sut.SpielSekunde);
+
+            sut.IsEJuniorenModus = false;
+            Assert.IsFalse(sut.IsEJuniorenModus);
+            Assert.AreEqual(20, sut.SpielMinute);
+            Assert.AreEqual(0, sut.SpielSekunde);
+        }
+
+        [Test]
+        public void EJuniorenModus_ChangeTimeAndCheck()
+        {
+            sut.IsEJuniorenModus = true;
+
+            sut.TimeMinusOne.Execute(null);
+            sut.TimeMinusOne.Execute(null);
+            sut.SecondMinusOne.Execute(null);
+            Assert.AreEqual(22, sut.SpielMinute);
+            Assert.AreEqual(59, sut.SpielSekunde);
+            Assert.AreEqual("21:59", sut.Spielzeit);
+            Assert.AreEqual("02:01", sut.AbsoluteSpielzeit);
+
+            sut.TimePlusOne.Execute(null);
+            sut.SecondPlusOne.Execute(null);
+            sut.SecondPlusOne.Execute(null);
+            Assert.AreEqual(23, sut.SpielMinute);
+            Assert.AreEqual(1, sut.SpielSekunde);
+            Assert.AreEqual("23:01", sut.Spielzeit);
+            Assert.AreEqual("00:59", sut.AbsoluteSpielzeit);
+
+            TimeMinusTwenty();
+            SecondsMinusTwenty();
+            Assert.AreEqual(3, sut.SpielMinute);
+            Assert.AreEqual(40, sut.SpielSekunde);
+            Assert.AreEqual("3:00", sut.Spielzeit);
+            Assert.AreEqual("20:20", sut.AbsoluteSpielzeit);
+        }
+
+        [Test]
+        public void EJuniorenModus_ChangeToPauseAndCheck()
+        {
+            sut.IsEJuniorenModus = true;
+
+            sut.StartPausenzeit.Execute(null);
+            Assert.AreEqual(5, sut.SpielMinute);
+            Assert.AreEqual(0, sut.SpielSekunde);
+            Assert.AreEqual("05:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
+
+            sut.ResetTime.Execute(null);
+            Assert.AreEqual(24, sut.SpielMinute);
+            Assert.AreEqual(0, sut.SpielSekunde);
+            Assert.AreEqual("24:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
+        }
+
+        [Test]
+        public void EJuniorenModus_ChangeToTimeoutAndCheck()
+        {
+            sut.IsEJuniorenModus = true;
+
+            sut.StartTimeOut.Execute(null);
+            Assert.AreEqual(0, sut.SpielMinute);
+            Assert.AreEqual(30, sut.SpielSekunde);
+            Assert.AreEqual("00:30", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
+
+            sut.ResetTime.Execute(null);
+            Assert.AreEqual(24, sut.SpielMinute);
+            Assert.AreEqual(0, sut.SpielSekunde);
+            Assert.AreEqual("24:00", sut.Spielzeit);
+            Assert.AreEqual("00:00", sut.AbsoluteSpielzeit);
+        }
+
+
+        [Test]
+        public void EJuniorenModus_ChangeTimeAndReset()
+        {
+            sut.IsEJuniorenModus = true;
+
+            sut.TimeMinusOne.Execute(null);
+            Assert.AreEqual(23, sut.SpielMinute);
+
+            sut.ResetTime.Execute(null);
+            Assert.AreEqual(24, sut.SpielMinute);
+        }
+
+        [Test]
         public void PressBuzzer()
         {
             sut.BuzzerPressed.Execute(null);

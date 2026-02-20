@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Umsetzung_III.Commands;
 using Umsetzung_III.Controller;
 using Umsetzung_III.Model;
+using Umsetzung_III.Services;
 using Umsetzung_III.Stores;
 using static Umsetzung_III.Model.Actions;
 
@@ -24,8 +25,10 @@ namespace Umsetzung_III
         private readonly StrafenStore _strafenGast;
         private readonly LogoController _logoStore;
         private readonly EffSpielzeitController _effSpielzeitController;
+        private readonly EJuniorenBeepController _eJuniorenBeepController;
         private readonly SpielzeitStore _spielzeitStore;
         private readonly PauseOrTimeOutButtonController _pauseOrTimeOutButtonStore;
+        private readonly EJuniorenModusController _eJuniorenModusController;
         private readonly StrafenStyleController strafenStyle;
 
         // Properties, die von der View abgefragt werden, um Buttons zu verstecken/ anzuzeigen
@@ -33,7 +36,7 @@ namespace Umsetzung_III
         public bool ButtonVisibilityStop => !_spielzeitStore.IsStartButtonVisible;
         public bool ButtonVisibilityPause => _pauseOrTimeOutButtonStore.IsPauseButtonVisible && ButtonVisibilityStart;
         public bool ButtonVisibilityTimeOut => !_pauseOrTimeOutButtonStore.IsPauseButtonVisible && ButtonVisibilityStart;
-
+        public bool IsEJuniorenModusSwitchable => _eJuniorenModusController.IsSwitchable;
         public bool LogoVisibility => _logoStore.IsLogoVisible;
         public bool EffektiveSpielzeitVisibility => _effSpielzeitController.IsEffektiveSpielzeitVisible && !ButtonVisibilityStart;
 
@@ -41,7 +44,8 @@ namespace Umsetzung_III
         public string LogoSource
         {
             get { return _logoStore.GetLogoSource(); }
-            set { 
+            set
+            {
                 _logoStore.SetLogoSource(value);
                 OnPropertyChanged("LogoSource");
             }
@@ -172,6 +176,17 @@ namespace Umsetzung_III
                 }
             }
         }
+        public virtual bool IsEJuniorenModus
+        {
+            get { return _spielanzeige.IsEJuniorenModus; }
+            set
+            {
+                _spielanzeige.IsEJuniorenModus = value;
+                _spielzeitStore.SetHalftimeDurationMinute(_spielanzeige.DurationHalftime);
+                OnPropertyChanged("Spielzeit");
+                OnPropertyChanged("AbsoluteSpielzeit");
+            }
+        }
 
         // Definition der Buttons der Views
         public ICommand HeimScoreUp { get; }
@@ -221,6 +236,7 @@ namespace Umsetzung_III
 
         public SpielanzeigeViewModel()
         {
+            BuzzerService buzzerService = new BuzzerService();
             // Initialisierung des Models und der Stores
             _spielanzeige = new SpielanzeigeModel();
             _logoStore = new LogoController(this);
@@ -228,13 +244,16 @@ namespace Umsetzung_III
             _strafenGast = new StrafenStore(_spielzeitStore, Team.Gast);
             _strafenHeim = new StrafenStore(_spielzeitStore, Team.Heim);
             _effSpielzeitController = new EffSpielzeitController(this, _spielzeitStore);
+            _eJuniorenBeepController = new EJuniorenBeepController(this, _spielzeitStore, buzzerService);
             _pauseOrTimeOutButtonStore = new PauseOrTimeOutButtonController(this, _spielzeitStore);
+            _eJuniorenModusController = new EJuniorenModusController(this, _spielzeitStore);
             strafenStyle = new StrafenStyleController();
 
             // EventBinding
             _spielzeitStore.OnStartButtonVisibilityChanged += SpielzeitStore_ButtonVisibilityChanged;
-
             _spielzeitStore.OnSpielzeitChanged += SpielzeitStore_SpielzeitChanged;
+            _spielzeitStore.OnTimeModeChanged += SpielzeitStore_ResetButtonContentChanged;
+            _spielzeitStore.OnSpielzeitRanOut += SpielzeitStore_SpielzeitReset;
 
             _strafenHeim.OnStrafenChanged += StrafenHeim_StrafenChanged;
             _strafenGast.OnStrafenChanged += StrafenGast_StrafenChanged;
@@ -242,8 +261,8 @@ namespace Umsetzung_III
             _logoStore.OnLogoVisibilityChanged += LogoStore_LogoVisibilityChanged;
             _effSpielzeitController.OnEffektiveSpielzeitVisibilityChanged += HalfTimeStore_EffektiveSpielzeitVisibilityChanged;
             _pauseOrTimeOutButtonStore.OnButtonVisibilityChanged += PauseOrTimeOutButtonStore_ButtonVisibilityChanged;
+            _eJuniorenModusController.OnSwitchabilityChanged += EJuniorenModusController_SwitchabilityChanged;
 
-            _spielzeitStore.OnTimeModeChanged += SpielzeitStore_ResetButtonContentChanged;
 
             // Zuteilung fuer Buttons
             // Buttons fuer die Kontrolle des Punktestandes
@@ -301,6 +320,11 @@ namespace Umsetzung_III
             _effSpielzeitController.CheckIfEffektiveSpielzeitMustBeVisible();
             OnPropertyChanged("Spielzeit");
             OnPropertyChanged("AbsoluteSpielzeit");
+        }        
+        
+        private void SpielzeitStore_SpielzeitReset()
+        {
+            _eJuniorenBeepController.Reset();
         }
 
         private void StrafenHeim_StrafenChanged()
@@ -325,6 +349,10 @@ namespace Umsetzung_III
         {
             OnPropertyChanged("ButtonVisibilityPause");
             OnPropertyChanged("ButtonVisibilityTimeOut");
+        }
+        private void EJuniorenModusController_SwitchabilityChanged()
+        {
+            OnPropertyChanged("IsEJuniorenModusSwitchable");
         }
         private void SpielzeitStore_ResetButtonContentChanged()
         {

@@ -19,7 +19,7 @@ namespace Umsetzung_III.Controller
             _viewModel = spielanzeigeViewModel;
             _spielzeitStore = spielzeitStore;
 
-            _timerStore = new TimerService();
+            _timerStore = TimerService.GetTimerService();
             _timerStore.AddSubscriber(this);
         }
 
@@ -30,7 +30,7 @@ namespace Umsetzung_III.Controller
 
         private void CheckIfPauseOrTimeOutIsShown()
         {
-            if (IsPausePossibleAndNotVisible())
+            if (IsPausePossible())
             {
                 IsPauseButtonVisible = true;
                 ButtonVisibilityChanged();
@@ -42,7 +42,7 @@ namespace Umsetzung_III.Controller
             }
         }
 
-        private bool IsPausePossibleAndNotVisible()
+        private bool IsPausePossible()
         {
             return (_viewModel.SpielMinute == 0 || _viewModel.SpielMinute == _spielzeitStore.GetDurationOfHalfTime()) && _viewModel.SpielSekunde == 0;
         }

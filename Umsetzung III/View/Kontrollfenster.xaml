@@ -484,12 +484,13 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="1*" />
+                            <RowDefinition Height="0.3*" />
                         </Grid.RowDefinitions>
                         <Button x:Name="AlleZurücksetzen"
                                 Grid.Row="0"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="1"
-                                Margin="30,10,15,10"
+                                Margin="30,5,15,5"
                                 Content="Reset Alle"
                                 Foreground="#2D2D2D"
                                 FontSize="28"
@@ -511,7 +512,7 @@
                                 Grid.Row="0"
                                 Grid.Column="6"
                                 Grid.ColumnSpan="1"
-                                Margin="15,10,30,10"
+                                Margin="15,5,30,5"
                                 Content="Pause"
                                 Foreground="#2D2D2D"
                                 FontSize="28"
@@ -532,7 +533,7 @@
                                 Grid.Row="0"
                                 Grid.Column="1"
                                 Grid.ColumnSpan="1"
-                                Margin="15,10,30,10"
+                                Margin="15,5,30,5"
                                 Content="Time Out"
                                 Foreground="#2D2D2D"
                                 FontSize="28"
@@ -561,7 +562,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="1"
-                                    Margin="30,5,-5,5"
+                                    Margin="30,0,-5,5"
                                     Content="-1m"
                                     Foreground="#2D2D2D"
                                     FontSize="30"
@@ -582,7 +583,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="1"
-                                    Margin="10,5,15,5"
+                                    Margin="10,0,15,5"
                                     Content="+1m"
                                     Foreground="#2D2D2D"
                                     FontSize="30"
@@ -612,7 +613,7 @@
                                     Grid.Row="1"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="1"
-                                    Margin="15,5,10,5"
+                                    Margin="15,0,10,5"
                                     Content="-1s"
                                     Foreground="#2D2D2D"
                                     FontSize="30"
@@ -633,7 +634,7 @@
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Grid.ColumnSpan="1"
-                                    Margin="-5,5,30,5"
+                                    Margin="-5,0,30,5"
                                     Content="+1s"
                                     Foreground="#2D2D2D"
                                     FontSize="30"
@@ -652,6 +653,69 @@
                             </Button>
                         </Grid>
 
+                        <Grid Grid.Row="2"
+                             Grid.Column="0"
+                              Grid.ColumnSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.Column="0"
+                                  Grid.Row="2"
+                                  Grid.ColumnSpan="2"
+                                  HorizontalAlignment="Center"
+                                  Margin="30,0,15,5"
+                                  FontSize="13"
+                                  Focusable="False"
+                                  IsChecked="{Binding IsEJuniorenModus}"
+                                  IsEnabled="{Binding IsEJuniorenModusSwitchable}">
+
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+
+                                <CheckBox.Template>
+                                    <ControlTemplate TargetType="CheckBox">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Border x:Name="Border"
+                                                Width="14"
+                                                Height="14"
+                                                CornerRadius="7"
+                                                BorderBrush="Red"
+                                                BorderThickness="2"
+                                                Background="Transparent"
+                                                Margin="0,0,5,0"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center">
+                                                <Path x:Name="CheckMark"
+                                                  Data="M0,4 L2,6 L5,1"
+                                                  Stroke="Red"
+                                                  StrokeThickness="2"
+                                                  Visibility="Collapsed"
+                                                  SnapsToDevicePixels="True"
+                                                  Stretch="Uniform"/>
+                                            </Border>
+
+                                            <ContentPresenter VerticalAlignment="Center" />
+                                        </StackPanel>
+
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </CheckBox.Template>
+                                E-Junioren-Modus
+                            </CheckBox>
+                        </Grid>
 
 
                     </Grid>
